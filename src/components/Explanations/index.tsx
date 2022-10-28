@@ -20,6 +20,7 @@ export const Explanations: FunctionComponent<Props> = () => {
     updateExplanation: state.updateExplanation
   }), shallow)
   
+  //ADD FOCUS WHEN NEW
   return (
     <Wrapper>
       <p>Explanations</p>
@@ -47,7 +48,7 @@ const Wrapper = styled.div`
   background: #eee;
   border-radius: 4px;
   margin-left: 8px;
-  width: 30%;
+  height: 100%;
   padding: 4px;
   > p {
     margin: 0;

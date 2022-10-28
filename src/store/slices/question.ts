@@ -1,8 +1,19 @@
 import { StateCreator } from "zustand"
+import { fetchQuestions, Question } from "../../fetch/question"
 
 export interface QuestionSlice {
-  content: string
-  setContent: (content: string) => void
+  content: {}
+  optionalContent: {}
+  requiredContent: {}
+  lastIndex: number
+  setContent: (id: string, html: string) => void
+  setOptionalContent: (id: string, html: string) => void
+  setRequiredContent: (id: string, html: string) => void
+  setLastIndex: (newIndex: number) => void
+  deleteContent: (componentId: string) => void
+  clearQuestion: () => void
+  fetchQuestions: () => void
+  questions: Question[]
 }
 
 export const createQuestionSlice: StateCreator<
@@ -11,8 +22,56 @@ export const createQuestionSlice: StateCreator<
   [],
   QuestionSlice
 > = (set, get) => ({
-  content: '',
-  setContent: (newContent) => {
+  lastIndex: 1,
+  content: {},
+  optionalContent: {},
+  requiredContent: {},
+  questions: [],
+  setContent: (id, html) => {
+    let auxContent = {...get().content}
+    auxContent[id] = html
+    set((state) => ({
+     content: auxContent 
+    }))
+  },
+  setOptionalContent: (id, html) => {
+    let auxContent = {...get().optionalContent}
+    auxContent[id] = html
+    set((state) => ({
+     optionalContent: auxContent 
+    }))
+  },
+  setRequiredContent: (id, html) => {
+    let auxContent = {...get().requiredContent}
+    auxContent[id] = html
+    set((state) => ({
+     requiredContent: auxContent 
+    }))
+  },
+  setLastIndex: (newIndex) => {
+    set((state) => ({ lastIndex: newIndex }))
+  }, 
+  deleteContent: (componentId) => {    
+    const auxContent = {...get().content}
+    let newContent = {}
+    Object.keys(get().content)
+      .filter(k => k !== componentId)
+      .forEach(v => {
+        newContent[v] = auxContent[v]
+      })
+
     set((state) => ({ content: newContent }))
-  }
+  },
+  clearQuestion: () => {
+    set((state) => ({
+      content: {},
+      optionalContent: {},
+      requiredContent: {},
+      lastIndex: 1
+    }))
+  },
+  fetchQuestions: async() => {
+    const res = await fetchQuestions()
+    set({questions: res})
+  },
 })

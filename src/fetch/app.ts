@@ -4,6 +4,7 @@ import { useStore } from '../store'
 export interface App {
   name: string;
   id: string; 
+  type: string;
 }
 
 export const getApps = async() => {

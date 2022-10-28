@@ -260,7 +260,6 @@ export const SearchNReplace = Extension.create<SearchOptions>({
               const { decorationsToReturn, results } = processSearches(doc, regex(searchTerm, disableRegex, caseSensitive), searchResultClass)
 
               extensionThis.options.results = results
-              console.log("🚀 ~ file: Search.tsx ~ line 263 ~ apply ~ results", results)
 
               // return results
               return decorationsToReturn

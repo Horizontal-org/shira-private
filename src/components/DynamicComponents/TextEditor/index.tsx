@@ -4,11 +4,10 @@ import styled, { createGlobalStyle } from 'styled-components'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
-
 import { Explanation } from './extensions/Explanation'
 import { MenuBar } from './components/MenuBar'
 import shallow from 'zustand/shallow'
-import { useStore } from '../../store'
+import { useStore } from '../../../store'
 import { SearchNReplace } from './extensions/Search'
 
 Highlight.configure({
@@ -19,33 +18,21 @@ Highlight.configure({
 
 const defaultContent = `
 <h2>
-  Hi there,
+  Text
 </h2>
 <p>
-  this is a <em>basic</em> example of a message. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p >
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
+  Body
 </p>
 `
 
-const markExplanations = (selectedExplanation) => { 
-  const explanations = document.querySelectorAll('[data-explanation]')
+const markExplanations = (editorId, selectedExplanation) => { 
+  const explanations = document.getElementById(editorId).querySelectorAll('[data-explanation]')
   explanations.forEach((e) => {        
     if (e.classList.contains('mark-active')) {
       e.classList.remove('mark-active')
     }
   })
 
-  // FIX TIMEOUT
   setTimeout(() => {
     explanations.forEach((e) => {
       //TODO Multiple marks per explanation
@@ -58,9 +45,12 @@ const markExplanations = (selectedExplanation) => {
 }
 
 
-interface Props {}
+interface Props {
+  componentId?: string;
+  componentPosition?: string
+}
 
-export default ({ }: Props) => {
+export const TextEditor = ({ componentId, componentPosition }: Props) => {
 
   const {
     changeSelected,
@@ -72,6 +62,8 @@ export default ({ }: Props) => {
     setContent: state.setContent
   }), shallow)
 
+  const editorId = `component-text-${componentId}`
+  const [rawHtml, handleRawHtml] = useState(null)
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -89,43 +81,57 @@ export default ({ }: Props) => {
       }
     },
     onUpdate(props) {
-      setContent(props.editor.getHTML())
+      handleRawHtml(props.editor.getHTML())      
     },
     onCreate(props) {
-      setContent(props.editor.getHTML())
+      handleRawHtml(props.editor.getHTML())
+      
     }
   })
-
+  
+  // console.log('texteditor', componentId, componentPosition)
   useEffect(() => {
     if (editor) {
-      markExplanations(selectedExplanation)      
+      markExplanations(editorId, selectedExplanation)      
     }
   }, [selectedExplanation])
   
+  useEffect(() => {
+    const parsed = `<div data-position='${componentPosition}' id='${editorId}'>${rawHtml}</div>`
+    setContent(editorId, parsed)
+  }, [componentPosition, rawHtml])
+
   return (
     <Wrapper>
-      <EditorStyles />
-      <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+        
+      <EditorWrapper>
+        <EditorStyles />
+        <div></div>
+        <EditorContent id={editorId} editor={editor} />
+        <MenuBar editor={editor} />
+      </EditorWrapper>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  padding: 1rem;
+  
+`
+
+const EditorWrapper = styled.div`
+  padding: 6px;
   background: #eee;
-  border-radius: 4px;
-  width: 70%
+  border-radius: 4px;  
+  display: inline-block;
 `
 
 const EditorStyles = createGlobalStyle`
 /* Basic editor styles */
 .ProseMirror {
-  margin-top: 8px;
   background: white;
   border-radius: 4px;
 
-  padding: 8px;
+  padding: 8px 20px;
 
   > * + * {
     margin-top: 0.75em;

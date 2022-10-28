@@ -6,6 +6,7 @@ export interface AppsSlice {
   fetchApp: () => void
   setSelectedApps: (apps: string[]) => void
   selectedApps: string[]
+  clearSelectedApps: () => void
 }
 
 export const createAppsSlice: StateCreator<
@@ -15,6 +16,7 @@ export const createAppsSlice: StateCreator<
   AppsSlice
 > = (set) => ({
   apps: [],
+  selectedApps: [],
   fetchApp: async() => {
     const res = await getApps()
     set({apps: res})
@@ -22,5 +24,9 @@ export const createAppsSlice: StateCreator<
   setSelectedApps: (apps) => {
     set((state) => ({ selectedApps: [...apps] }))
   },
-  selectedApps: []
+  clearSelectedApps: () => {
+    set((state) => ({
+      selectedApps: [],
+    }))
+  }
 })

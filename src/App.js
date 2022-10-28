@@ -4,14 +4,16 @@ import {
   Routes,
   Route,
 } from 'react-router-dom'
-import { MainLayout } from './components/MainLayout';
+import { QuestionLayout } from './components/QuestionLayout';
+import { HomeLayout } from './components/HomeLayout';
 
 function App() {
   return (
     <Wrapper>
       <BrowserRouter>
         <Routes>          
-          <Route path="/" element={<MainLayout />} />
+          <Route path="/question" element={<QuestionLayout />} />
+          <Route path="/" element={<HomeLayout />} />
         </Routes>
       </BrowserRouter>
     </Wrapper>
