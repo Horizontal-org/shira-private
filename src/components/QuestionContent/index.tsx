@@ -140,7 +140,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
                     index={i}  
                     component={cloneElement(c.node, { componentId: c.position, componentPosition: i })}
                     onDelete={() => {                       
-                      console.log(`component-${c.type}-${c.position}`, i)
                       deleteExplanations(c.position, c.type)
                       deleteContent(`component-${c.type}-${c.position}`)
                       const newComponents = components.filter(cf => cf.position !== c.position)
@@ -160,7 +159,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
         addComponent={(componentType) => {
           if (validate(appType, componentType, components)) {
             const newComponents = [...components]
-            console.log("🚀 ~ file: index.tsx ~ line 120 ~ newComponents", newComponents)
             const newIndex = lastIndex + 1
   
             let findComponent = {
