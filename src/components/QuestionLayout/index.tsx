@@ -15,6 +15,7 @@ export const QuestionLayout: FunctionComponent<Props> = () => {
 
 
 const Wrapper = styled.div`
+
   padding: 1rem;
   display: flex;
   justify-content: center;

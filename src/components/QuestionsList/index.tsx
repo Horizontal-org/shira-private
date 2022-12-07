@@ -24,7 +24,6 @@ export const QuestionsList = ({ questions }) => {
             >{q.isPhising ? 'Phising' : 'Legitimate'}</Phishing>  
             <Button text="Delete" onClick={async() => {
               if(window.confirm('Sure you want to delete this question?')){
-                console.log('delete')
                 await deleteQuestion(q.id)
                 fetchQuestions()
               }

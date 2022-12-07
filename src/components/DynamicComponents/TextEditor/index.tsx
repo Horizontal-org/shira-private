@@ -89,7 +89,6 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
     }
   })
   
-  // console.log('texteditor', componentId, componentPosition)
   useEffect(() => {
     if (editor) {
       markExplanations(editorId, selectedExplanation)      

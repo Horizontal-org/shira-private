@@ -23,7 +23,6 @@ export interface Question {
 export const fetchQuestions = async() => {
   try {
     const res = await axios.get<Question[]>(`${process.env.REACT_APP_API_URL}/question`) 
-    console.log("🚀 ~ file: question.ts ~ line 46 ~ submit ~ res", res)
     return res.data
   } catch (err) {
     console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
@@ -33,7 +32,6 @@ export const fetchQuestions = async() => {
 export const deleteQuestion = async(id) => {
   try {
     const res = await axios.delete(`${process.env.REACT_APP_API_URL}/question/${id}`) 
-    console.log("🚀 ~ file: question.ts ~ line 46 ~ submit ~ res", res)
     return res.data
   } catch (err) {
     console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
@@ -50,12 +48,6 @@ export const submit = async(name, phising) => {
     requiredContent
   } = useStore.getState()
   
-  console.log("🚀 ~ SUBMIT", content)
-  console.log("🚀 ~ SUBMIT", optionalContent)
-  console.log("🚀 ~ SUBMIT", requiredContent)
-  console.log("🚀 ~ SUBMIT", explanations)
-  console.log("🚀 ~ SUBMIT", selectedApps)
-
   const requiredHTML = Object.keys(requiredContent).reduce((prev, current) => {
     return prev + requiredContent[current]
   }, `<div id='required-content'>`) + '</div>'
@@ -88,7 +80,6 @@ export const submit = async(name, phising) => {
   try {
     const res = await axios.post<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question`, payload)
     alert('Question created')
-    console.log("🚀 ~ file: question.ts ~ line 46 ~ submit ~ res", res)
   } catch (err) {
     console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
   }

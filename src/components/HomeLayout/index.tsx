@@ -17,7 +17,6 @@ export const HomeLayout: FunctionComponent<Props> = () => {
     questions: state.questions,
     fetchQuestions: state.fetchQuestions,
   }), shallow)
-  console.log("🚀 ~ file: index.tsx ~ line 17 ~ questions", questions)
 
   useEffect(() => {
     fetchQuestions()
