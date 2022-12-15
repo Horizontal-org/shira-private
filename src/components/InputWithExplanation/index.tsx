@@ -63,6 +63,10 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
             const index = explanationIndex + 1
             inputRef.current.setAttribute('data-explanation', index + '')
             addExplanation(index)
+            onChange(
+              index,
+              inputRef.current.value,
+            )
           }}
         />
       </Separator>
