@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { TextEditor } from '../DynamicComponents/TextEditor'
 import { Explanations } from '../Explanations'
@@ -38,6 +38,10 @@ export const Question: FunctionComponent<Props> = () => {
     clearApps()
     clearExplanations()
   }
+
+  useEffect(() => {
+    return clear
+  }, []) 
 
   return (
     <div>
