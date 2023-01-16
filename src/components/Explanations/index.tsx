@@ -1,45 +1,109 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
-import { ExplanationInput } from '../ExplanationInput'
+import { DragItem } from '../QuestionContent/components/DragItem'
+import { ExplanationInput } from './components/ExplanationInput'
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Component } from '../../utils/dynamicComponents'
+import { Explanation } from '../../store/slices/explanation'
+import { publish } from '../../utils/customEvent'
 
 interface Props {}
 
 export const Explanations: FunctionComponent<Props> = () => {
 
   const {
-    explanations,
+    storeExplanations,
     changeSelected,
     selectedExplanation,
-    updateExplanation
+    deleteExplanation,
+    updateExplanation,
+    updateExplanations
   } = useStore((state) => ({
-    explanations: state.explanations,
+    storeExplanations: state.explanations,
     changeSelected: state.changeSelected,
     selectedExplanation: state.selectedExplanation,
-    updateExplanation: state.updateExplanation
+    updateExplanation: state.updateExplanation,
+    updateExplanations: state.updateExplanations,
+    deleteExplanation: state.deleteExplanation
   }), shallow)
+
+  const reorder = (list, startIndex, endIndex) => {
+    const result: Explanation[] = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
   
-  //ADD FOCUS WHEN NEW
+    return result.map((r, i) => {
+      return {
+        ...r,
+        position: i + 1
+      }
+    })
+  };
+  
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const items = reorder(
+      storeExplanations,
+      result.source.index,
+      result.destination.index
+    );
+
+    updateExplanations(items)
+  }
+
   return (
     <Wrapper>
+  
       <p>Explanations</p>
-      { explanations.sort((a, b) => a.index - b.index) .map((e) => (
-        <Explanation
-          key={e.index}
-          selected={e.index === selectedExplanation}
-          onClick={() => {
-            changeSelected(e.index)
-          }}
-        >
-          <ExplanationInput 
-            onUpdate={(text) => {
-              updateExplanation(e.index, text)
-            }}
-            text={e.text}
-          />
-        </Explanation>
-      ))}
+
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId='droppable'>
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >          
+              { storeExplanations.map(((e, i) => (
+                <DragItem
+                  key={e.position + ''} 
+                  id={e.position + ''}   
+                  index={i}  
+                  component={(
+                    <ExplanationBox
+                      key={e.index}
+                      selected={e.index === selectedExplanation}
+                      onClick={() => {
+                        changeSelected(e.index)
+                      }}
+                    >
+                      <ExplanationInput 
+                        text={e.text}
+                        unselect={() => { changeSelected(null) }}
+                        onUpdate={(text) => {
+                          updateExplanation(e.index, text, e.position)
+                        }}
+                      />
+                    </ExplanationBox>
+                  )}
+                  onDelete={() => {                                           
+                    publish('delete-explanation', { deleteIndex: e.index })
+                    deleteExplanation(e.index)                    
+                  }}
+                />
+              ))) }
+              { provided.placeholder }
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+
     </Wrapper>
   )
 }
@@ -61,7 +125,7 @@ interface StyledExplanation {
   selected: boolean;
 }
 
-const Explanation = styled.div<StyledExplanation>`
+const ExplanationBox = styled.div<StyledExplanation>`
   border: 2px solid white;
   padding: 8px;
   border-radius: 4px; 

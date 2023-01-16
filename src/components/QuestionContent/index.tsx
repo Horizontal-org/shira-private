@@ -1,9 +1,9 @@
-import { cp } from 'fs';
 import { cloneElement, FunctionComponent, ReactElement, ReactNode, SetStateAction, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styled from 'styled-components'
 import shallow from 'zustand/shallow';
 import { useStore } from '../../store';
+import { Component, componentOptions } from '../../utils/dynamicComponents';
 
 import { AddComponent } from '../AddComponent'
 import { Attachment } from '../DynamicComponents/Attachment';
@@ -14,11 +14,6 @@ interface Props {
   appType: string;
 }
 
-interface Component {
-  node: ReactElement
-  type: string
-  position: number
-}
 
 const componentsList = [
   {
@@ -33,41 +28,7 @@ const componentsList = [
   }
 ]
 
-const componentOptions = (type) => {  
-  if (type === 'email') {
-    return [
-      {
-        id: 'text',
-        label: 'Body (max 1)',
-        limit: 1
-      },
-      {
-        id: 'attachment',
-        label: 'Attachment (max 5)',
-        limit: 5
-      }
-    ]
-  }
-
-  if (type === 'messaging') {
-    return [
-      {
-        id: 'text',
-        label: 'Message (max 5)',
-        limit: 5
-      },
-      {
-        id: 'attachment',
-        label: 'Attachment (max 5)',
-        limit: 5
-      }
-    ]
-  }
-
-  return []
-}
-
-const reorder = (list, startIndex, endIndex) => {
+export const reorder = (list, startIndex, endIndex) => {
   const result: Component[] = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -121,7 +82,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
 
     handleComponents(items)
   }
-
   
   return (
     <>

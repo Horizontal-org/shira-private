@@ -71,7 +71,8 @@ export const submit = async(name, phising) => {
     },
     explanations: explanations.map((e) => {
       return {
-        position: e.index + '',
+        position: e.position + '',
+        index: e.index + '',
         text: e.text
       }
     })

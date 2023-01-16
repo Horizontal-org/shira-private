@@ -3,9 +3,9 @@ import { renderToString } from 'react-dom/server'
 import styled from 'styled-components'
 import shallow from "zustand/shallow";
 import { useStore } from "../../../store";
-import { ComponentOptions } from "../../ComponentOptions";
-import { ExplanationButton } from "../../ExplanationButton";
+import { ExplanationButton } from "../../Explanations/components/ExplanationButton";
 import { Input } from "../../Input";
+import { InputWithExplanation } from "../../InputWithExplanation";
 
 interface Props {
   componentId?: string;
@@ -15,16 +15,8 @@ interface Props {
 export const Attachment: FunctionComponent<Props> = ({ componentId, componentPosition }) => {
 
   const {
-    addExplanation,
-    explanationIndex,
-    selectedExplanationIndex,
-    changeSelected,
     setContent
   } = useStore((state) => ({
-    addExplanation: state.addExplanation,
-    explanationIndex: state.explanationIndex,
-    selectedExplanationIndex: state.selectedExplanation,
-    changeSelected: state.changeSelected,
     setContent: state.setContent
   }), shallow)
     
@@ -42,11 +34,26 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
     setContent(componentFinalId, `<span ${explanation}${position}id='${componentFinalId}'>${inputRef.current.value}</span>`)
   }
 
+  // here use input with explanation 
+
   return (
     <Wrapper>
       <Separator>
         <InputWrapper>
-          <Input
+        
+          <InputWithExplanation 
+            id={componentFinalId} 
+            name='sender-name'
+            customRef={inputRef}
+            placeholder={'Attachment name'}
+            required={true}
+            onChange={(expl, value) => {
+              // onChange(expl, value, 'component-required-sender-name')
+              parseHtml()
+            }}
+          />
+
+          {/* <Input
             id={`component-attachment-${componentId}`} 
             ref={inputRef}
             placeholder={'Attachment name'}
@@ -59,9 +66,9 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
                 changeSelected(parseInt(isSelected))
               }
             }}
-          />
+          /> */}
         </InputWrapper>
-        <ExplanationButton
+        {/* <ExplanationButton
           active={inputRef.current && selectedExplanationIndex + '' == inputRef.current.getAttribute('data-explanation')}
           onClick={() => { 
             const index = explanationIndex + 1
@@ -69,7 +76,7 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
             addExplanation(index)
             parseHtml()
           }}
-        />
+        /> */}
       </Separator>
     </Wrapper>
   )

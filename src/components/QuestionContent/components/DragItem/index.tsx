@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { Draggable } from "react-beautiful-dnd";
-import { ComponentOptions } from '../../../ComponentOptions';
+import { DynamicComponentOptions } from '../../../DynamicComponentOptions';
 
 interface Props {
   id: string;
@@ -29,7 +29,7 @@ export const DragItem: FunctionComponent<Props> = ({
             isDragging={snapshot.isDragging}
             {...draggableProvided.draggableProps}
             >
-            <ComponentOptions
+            <DynamicComponentOptions
               dragHandleProps={draggableProvided.dragHandleProps}
               onDelete={onDelete}
             />

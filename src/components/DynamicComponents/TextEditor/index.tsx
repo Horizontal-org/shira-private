@@ -9,6 +9,7 @@ import { MenuBar } from './components/MenuBar'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../../store'
 import { SearchNReplace } from './extensions/Search'
+import { subscribe, unsubscribe } from '../../../utils/customEvent'
 
 Highlight.configure({
   HTMLAttributes: {
@@ -45,6 +46,21 @@ const markExplanations = (editorId, selectedExplanation) => {
 }
 
 
+const cleanDeletedExplanations = (editor, deleteIndex) => {
+  if (editor) {
+    editor.state.doc.descendants((node, pos) => {
+      node.marks.forEach(mark => {
+        if (mark.attrs['data-explanation']) {
+          if (mark.attrs['data-explanation'] === deleteIndex) {
+            editor.chain().focus().setTextSelection(pos + 1).run()
+            editor.chain().focus().unsetExplanation().run()
+          }
+        }
+      })
+    })
+  }  
+}
+
 interface Props {
   componentId?: string;
   componentPosition?: string
@@ -55,11 +71,13 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
   const {
     changeSelected,
     selectedExplanation,
-    setContent
+    setContent,
+    storeExplanations
   } = useStore((state) => ({
     changeSelected: state.changeSelected,
     selectedExplanation: state.selectedExplanation,
-    setContent: state.setContent
+    setContent: state.setContent,
+    storeExplanations: state.explanations
   }), shallow)
 
   const editorId = `component-text-${componentId}`
@@ -85,7 +103,10 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
     },
     onCreate(props) {
       handleRawHtml(props.editor.getHTML())
-      
+
+      subscribe('delete-explanation', (event) => {
+        cleanDeletedExplanations(props.editor, event.detail.deleteIndex)
+      })
     }
   })
   
@@ -95,6 +116,12 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
     }
   }, [selectedExplanation])
   
+  useEffect(() => {
+    return () => {
+      unsubscribe('delete-explanation')
+    }
+  }, [])
+
   useEffect(() => {
     const parsed = `<div data-position='${componentPosition}' id='${editorId}'>${rawHtml}</div>`
     setContent(editorId, parsed)

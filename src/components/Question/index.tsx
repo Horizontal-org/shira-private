@@ -12,6 +12,8 @@ import { Input } from '../Input'
 import { useStore } from '../../store'
 import shallow from 'zustand/shallow'
 import { Link } from 'react-router-dom'
+import { subscribe, unsubscribe } from '../../utils/customEvent'
+import { cleanDeletedExplanations } from '../../utils/explanations'
 
 interface Props {}
 
@@ -40,9 +42,16 @@ export const Question: FunctionComponent<Props> = () => {
   }
 
   useEffect(() => {
-    return clear
-  }, []) 
+    subscribe('delete-explanation', (event) => {
+      cleanDeletedExplanations(event.detail.deleteIndex)
+    })
 
+    return () => {
+      unsubscribe('delete-explanation')
+      clear()
+    }
+  }, [])
+  
   return (
     <div>
       <div>
@@ -135,59 +144,68 @@ export const Question: FunctionComponent<Props> = () => {
             
             
             { selectedApps.length > 0 && (
-              <>                
-                <h3>
-                  Required content
-                </h3>
-                
-                <RequiredContent 
-                  type={appType}
-                />
+              <DynamicContentWrapper>                
+                <DynamicContent id='dynamic-content'>
+                  <h3>
+                    Required content
+                  </h3>
 
-                <h3>
-                  Optional content
-                </h3>
-                
-                <OptionalContent 
-                  type={appType}
-                />
-
-                <QuestionContent 
-                  appType={appType}
-                />
-
-                <div>
-                  <Button 
-                    text="Submit"
+                  <RequiredContent 
+                    type={appType}
                   />
-                </div>
-              </>
+
+                  <h3>
+                    Optional content
+                  </h3>
+                  
+                  <OptionalContent 
+                    type={appType}
+                  />
+
+                  <QuestionContent 
+                    appType={appType}
+                  />
+
+                  <div>
+                    <Button 
+                      text="Submit"
+                    />
+                  </div>
+                </DynamicContent>
+
+                <ExplanationsWrapper>
+                  <Explanations />
+                </ExplanationsWrapper>
+              </DynamicContentWrapper>
             )}
 
           </ContentWrapper>
 
-          <ExplanationsWrapper>
-            <Explanations />
-          </ExplanationsWrapper>
         </SceneStructure>
-        
-       
+               
       </div>
     </div>
   )
 }
 
-const SceneStructure = styled.div`
+const DynamicContentWrapper = styled.div`
   display: flex;
 `
 
+const DynamicContent = styled.div`
+  width: 70%;
+`
+
+const SceneStructure = styled.div`
+  display: flex;
+`
 
 const ExplanationsWrapper = styled.div`
   width: 30%;
 `
 
 const ContentWrapper = styled.form`
-  width: 70%;
+  width: 100%;
 `
 
 interface StyledAppType {

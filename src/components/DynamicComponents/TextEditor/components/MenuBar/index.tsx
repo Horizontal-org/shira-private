@@ -122,7 +122,7 @@ export const MenuBar = ({ editor }) => {
         onClick={() => {
           const newIndex = explanationIndex + 1
           editor.chain().focus().setExplanation({
-            'data-explanation': newIndex
+            'data-explanation': newIndex,
           }).run()
           addExplanation(newIndex)
         }}
@@ -137,10 +137,10 @@ export const MenuBar = ({ editor }) => {
             editor.chain().focus().run()
             const deleteIndex = editor.getAttributes('explanation')              
             deleteExplanation(deleteIndex['data-explanation'])
-            editor.chain().focus().unsetExplanation().run()              
+            editor.chain().focus().unsetExplanation().run()
           }}
         >
-          <HiOutlineChatBubbleBottomCenter color='#FCC934' size={18}/>          
+          <HiOutlineChatBubbleBottomCenter color='#3F6A3A' size={18}/>          
           <MdClear color='#e91e63' size={18}/>
         </RemoveExplanation>
       )}      
