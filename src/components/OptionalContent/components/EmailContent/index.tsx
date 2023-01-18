@@ -2,7 +2,7 @@ import React, { FunctionComponent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../../../store'
-import { ExplanationButton } from '../../../ExplanationButton'
+import { ExplanationButton } from '../../../Explanations/components/ExplanationButton'
 import { Input } from '../../../Input'
 import { InputWithExplanation } from '../../../InputWithExplanation'
 

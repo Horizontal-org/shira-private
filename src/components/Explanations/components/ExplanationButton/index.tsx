@@ -14,7 +14,7 @@ export const ExplanationButton: FunctionComponent<Props> = ({ onClick, active })
       active={active}
     >
       <HiOutlineChatBubbleBottomCenter 
-        size={20}       
+        size={24}       
       /> 
     </SvgWrapper>
 
@@ -33,8 +33,8 @@ const SvgWrapper = styled.div<StyledSvgWrapper>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   
   transition: 0.2s all;
   > svg {
@@ -42,13 +42,13 @@ const SvgWrapper = styled.div<StyledSvgWrapper>`
   }
 
   &:hover {
-    stroke: #6a707c;
+    stroke: #3F6A3A;
     background: #f1f2f4;
   }
   
   ${props =>  props.active && `
     > svg {
-      stroke: #FCC934;
+      stroke: #3F6A3A;
     }
   `
 }

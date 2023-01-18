@@ -2,7 +2,7 @@ import React, { FunctionComponent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
-import { ExplanationButton } from '../ExplanationButton'
+import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
 
 interface Props {
@@ -10,7 +10,8 @@ interface Props {
   name: string;
   id: string;
   onChange?: (expl, value) => void
-  required?: boolean
+  required?: boolean;
+  customRef?: React.MutableRefObject<HTMLInputElement>
 }
 
 export const InputWithExplanation: FunctionComponent<Props> = ({
@@ -18,7 +19,8 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   name,
   id,
   onChange,
-  required
+  required,
+  customRef
 }) => {
 
   const {
@@ -34,6 +36,7 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   }), shallow)
 
   const inputRef = useRef<HTMLInputElement>()
+  const ref = customRef || inputRef
 
   return (
     <div>
@@ -42,31 +45,43 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
           id={id}
           name={name}
           required={required}
-          ref={inputRef}
+          ref={ref}
           placeholder={placeholder}
           onChange={() => { 
             onChange(
-              inputRef.current.getAttribute('data-explanation'),
-              inputRef.current.value,
+              ref.current.getAttribute('data-explanation'),
+              ref.current.value,
             )
           }}
+          onBlur={(e) => {
+            const hasExplanation = ref.current.getAttribute('data-explanation')
+            if (hasExplanation) {
+              changeSelected(null)
+            }
+          }}
           onFocus={() => {
-            const isSelected = inputRef.current.getAttribute('data-explanation')
-            if (isSelected) {
-              changeSelected(parseInt(isSelected))
+            const hasExplanation = ref.current.getAttribute('data-explanation')
+            if (hasExplanation) {
+              changeSelected(parseInt(hasExplanation))
             }
           }}
         />
+        
         <ExplanationButton
-          active={inputRef.current && selectedExplanationIndex + '' == inputRef.current.getAttribute('data-explanation')}
-          onClick={() => { 
-            const index = explanationIndex + 1
-            inputRef.current.setAttribute('data-explanation', index + '')
-            addExplanation(index)
-            onChange(
-              index,
-              inputRef.current.value,
-            )
+          active={ref.current && selectedExplanationIndex + '' == ref.current.getAttribute('data-explanation')}
+          onClick={() => {
+            const hasExplanation = ref.current.getAttribute('data-explanation')
+            if (hasExplanation) {
+              changeSelected(parseInt(hasExplanation))
+            } else {
+              const index = explanationIndex + 1
+              ref.current.setAttribute('data-explanation', index + '')
+              addExplanation(index)
+              onChange(
+                index,
+                ref.current.value,
+              )
+            }
           }}
         />
       </Separator>

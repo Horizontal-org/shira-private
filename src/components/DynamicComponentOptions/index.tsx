@@ -7,7 +7,7 @@ interface Props {
   dragHandleProps: {}
 }
 
-export const ComponentOptions: FunctionComponent<Props> = ({
+export const DynamicComponentOptions: FunctionComponent<Props> = ({
   onDelete,
   dragHandleProps
 }) => {

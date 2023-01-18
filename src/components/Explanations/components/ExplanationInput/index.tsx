@@ -1,17 +1,20 @@
 import React, { FunctionComponent, useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import shallow from 'zustand/shallow';
+import { useStore } from '../../../../store';
 
 interface Props {
   onUpdate: (text: string) => void;
   text: string;
+  unselect: () => void;
 }
 
 export const ExplanationInput: FunctionComponent<Props> = ({
   text,
-  onUpdate
+  onUpdate,
+  unselect
 }) => {
 
-  // const [val, setVal] = useState("");
   const textAreaRef = useRef(null);
 
   const resizeTextArea = () => {
@@ -21,17 +24,21 @@ export const ExplanationInput: FunctionComponent<Props> = ({
 
   useEffect(resizeTextArea, [text]);
 
+  useEffect(() => {
+    textAreaRef.current.focus()
+  }, [textAreaRef])
 
   return (
     <div>
       <StyledTextArea 
         ref={textAreaRef}
-        placeholder="New explanation"
+         placeholder="New explanation"
         rows={1}
         value={text}
         onChange={(e) => {
           onUpdate(e.target.value)
         }}
+        onBlur={unselect}
       />
       {/* <button 
         onClick={onDelete}

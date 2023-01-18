@@ -1,15 +1,19 @@
 import { StateCreator } from "zustand"
 
+export interface Explanation {
+  index: number;
+  text?: string;
+  position?: number;
+}
+
 export interface ExplanationsSlice {
-  explanations: {
-    index: number;
-    text?: string;
-  }[],
+  explanations: Explanation[],
   selectedExplanation: number;
   // last explanation index
   explanationIndex: number;
   addExplanation: (index: number) => void
-  updateExplanation: (index: number, text: string) => void
+  updateExplanation: (index: number, text: string, position?: number) => void
+  updateExplanations: (explanations: Explanation[]) => void
   deleteExplanation: (index: number) => void
   deleteExplanations: (componentId: number, componentType: string) => void
   changeSelected: (index: number) => void
@@ -29,9 +33,10 @@ export const createExplanationsSlice: StateCreator<
     set((state) => ({
       explanations: [
         ...state.explanations,
-        { index: index, text: '' }
+        { index: index, text: '', position: index }
       ],
-      explanationIndex: index
+      explanationIndex: index,
+      selectedExplanation: index
     }))
   },
   deleteExplanation: (index) => {
@@ -57,14 +62,19 @@ export const createExplanationsSlice: StateCreator<
       explanations: state.explanations.filter(e => !toDelete.includes(e.index))
     }))
   },
-  updateExplanation: (index, text) => {
+  updateExplanation: (index, text, position) => {
     let oldExplanations = get().explanations.filter(e => e.index !== index)
-    set((state) => ({
-     explanations: [
+    const explanations = [
       ...oldExplanations,
-      { index: index, text: text }
-     ] 
+      { index: index, text: text, position: position}
+    ].sort((a, b) => a.position - b.position)
+
+    set((state) => ({
+     explanations: explanations
     }))
+  },
+  updateExplanations: (ex) => {
+    set((state) => ({ explanations: ex }))
   },
   changeSelected: (index) => set((state) => ({
     selectedExplanation: index
@@ -75,5 +85,5 @@ export const createExplanationsSlice: StateCreator<
       selectedExplanation: 0,
       explanationIndex: 0,
     }))
-  }
+  },
 })
