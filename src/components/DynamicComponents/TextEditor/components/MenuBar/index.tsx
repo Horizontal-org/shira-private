@@ -3,12 +3,12 @@ import { useStore } from '../../../../../store'
 import shallow from 'zustand/shallow'
 import styled from 'styled-components'
 
-import { FiBold, FiItalic, FiCode, FiList } from 'react-icons/fi'
+import { FiBold, FiItalic, FiCode, FiList, FiLink } from 'react-icons/fi'
 import { TbStrikethrough } from 'react-icons/tb'
 import { HiOutlineChatBubbleBottomCenter } from 'react-icons/hi2'
 import { MdClear } from 'react-icons/md'
 
-export const MenuBar = ({ editor }) => {
+export const MenuBar = ({ editor, setLink }) => {
   const {
     deleteExplanation,
     addExplanation,
@@ -101,6 +101,13 @@ export const MenuBar = ({ editor }) => {
       >
         h5
       </Heading>
+
+      <IconWrapper 
+        active={!!(editor.isActive('link'))}
+        onClick={() => editor.isActive('link') ? editor.chain().focus().unsetLink().run() :setLink()}
+      >
+        <FiLink size={18} />
+      </IconWrapper>
       
       <IconWrapper 
         active={!!(editor.isActive('bulletList'))}

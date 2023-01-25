@@ -1,7 +1,8 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import { EditorContent, useEditor } from '@tiptap/react'
+import Link from '@tiptap/extension-link'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import { Explanation } from './extensions/Explanation'
@@ -86,7 +87,10 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
     extensions: [
       StarterKit,
       Explanation,
-      SearchNReplace
+      SearchNReplace,
+      Link.configure({
+        openOnClick: false,
+      }),
     ],
     content: defaultContent,
     onSelectionUpdate(props) {      
@@ -109,6 +113,28 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
       })
     }
   })
+
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    // cancelled
+    if (url === null) {
+      return
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+  }, [editor])
   
   useEffect(() => {
     if (editor) {
@@ -134,7 +160,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
         <EditorStyles />
         <div></div>
         <EditorContent id={editorId} editor={editor} />
-        <MenuBar editor={editor} />
+        <MenuBar editor={editor} setLink={setLink} />
       </EditorWrapper>
     </Wrapper>
   )
