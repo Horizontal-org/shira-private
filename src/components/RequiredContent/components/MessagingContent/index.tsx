@@ -11,15 +11,29 @@ export const MessagingContent: FunctionComponent<Props> = ({ onChange }) => {
 
   return (
     <div>
-      <InputWithExplanation
-        id='content-phone'
-        name='sender-phone'
-        placeholder='Phone number'
-        required={true}
-        onChange={(expl, value) => {
-          onChange(expl, value, 'component-required-phone')
-        }}
-      />
+      <div>
+        <InputWithExplanation
+          id='content-phone'
+          name='sender-phone'
+          placeholder='Phone number'
+          required={true}
+          onChange={(expl, value) => {
+            onChange(expl, value, 'component-required-phone')
+          }}
+        />
+      </div>
+
+      <div>
+        <InputWithExplanation
+          id='content-fullname'
+          name='sender-fullname'
+          placeholder='Name'
+          required={true}
+          onChange={(expl, value) => {
+            onChange(expl, value, 'component-required-fullname')
+          }}
+        />
+      </div>
     </div>
   )
 }
