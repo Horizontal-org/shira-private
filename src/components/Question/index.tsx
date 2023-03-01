@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { TextEditor } from '../DynamicComponents/TextEditor'
 import { Explanations } from '../Explanations'
 import { AppsSelector } from '../AppsSelector'
 import { Button } from '../Button'
-import { submit } from '../../fetch/question'
+import { useSubmit } from '../../fetch/question'
 import { RequiredContent } from '../RequiredContent'
 import { OptionalContent } from '../OptionalContent'
 import { QuestionContent } from '../QuestionContent'
@@ -34,6 +33,8 @@ export const Question: FunctionComponent<Props> = () => {
   const [appType, handleAppType] = useState(null)
   const [name, handleName] = useState('')
   const [phising, handlePhising] = useState(false)
+
+  const { submit } = useSubmit() 
 
   const clear = () => {
     clearQuestion()
