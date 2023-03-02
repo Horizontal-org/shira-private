@@ -20,6 +20,7 @@ export const MessagingContent: FunctionComponent<Props> = ({ onChange }) => {
           onChange={(expl, value) => {
             onChange(expl, value, 'component-required-phone')
           }}
+          isPhoneNumber={true}
         />
       </div>
 

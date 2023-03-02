@@ -5,6 +5,8 @@ import { useStore } from '../../store'
 import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
 
+const RE_NUMERIC = /^[0-9\W]*$/
+
 interface Props {
   placeholder?: string;
   name: string;
@@ -12,6 +14,7 @@ interface Props {
   onChange?: (expl, value) => void
   required?: boolean;
   customRef?: React.MutableRefObject<HTMLInputElement>
+  isPhoneNumber?: boolean
 }
 
 export const InputWithExplanation: FunctionComponent<Props> = ({
@@ -20,8 +23,11 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   id,
   onChange,
   required,
-  customRef
+  customRef,
+  isPhoneNumber
 }) => {
+
+  const [value, setValue] = useState<string>('')
 
   const {
     addExplanation,
@@ -46,8 +52,11 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
           name={name}
           required={required}
           ref={ref}
+          value={value}
           placeholder={placeholder}
           onChange={() => { 
+            if(isPhoneNumber && !RE_NUMERIC.test(ref.current.value)) return
+            setValue(ref.current.value)
             onChange(
               ref.current.getAttribute('data-explanation'),
               ref.current.value,
