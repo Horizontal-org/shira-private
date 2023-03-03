@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import { AppItem } from '../AppItem'
+import { App } from '../../fetch/app'
 
 interface Props {
   type: string
+  savedSelectedApps?: App[]
 }
 
-export const AppsSelector:FunctionComponent<Props> = ({ type }) => {
+export const AppsSelector:FunctionComponent<Props> = ({ type, savedSelectedApps }) => {
 
   const {
     apps,
@@ -24,6 +26,11 @@ export const AppsSelector:FunctionComponent<Props> = ({ type }) => {
   const [selected, handleSelected] = useState([])
 
   useEffect(() => {
+    if(savedSelectedApps) {
+      const apps = savedSelectedApps.map((app: App) => app.id)
+      setSelectedApps(apps)
+      handleSelected(apps)
+    }
     fetchApp()
   }, [])
 
@@ -36,7 +43,6 @@ export const AppsSelector:FunctionComponent<Props> = ({ type }) => {
       handleSelected([...selectedApps])
     }
   }, [selectedApps])
-
 
   return (
     <Wrapper>

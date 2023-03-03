@@ -1,20 +1,17 @@
-import { FunctionComponent } from "react";
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { deleteQuestion, Question } from "../../fetch/question";
+import { deleteQuestion } from "../../fetch/question";
 import { useStore } from "../../store";
 import { Button } from "../Button";
 
-interface Props {
-  questions: Question[]
-}
-
 export const QuestionsList = ({ questions }) => {
+  const navigate = useNavigate()
 
   const fetchQuestions = useStore((state) => (state.fetchQuestions))
   return (
     <Wrapper>
       {questions.map((q) => (
-        <QuestionWrapper key={q.id}>
+        <QuestionWrapper key={q.id} onClick={() => navigate(`question/${q.id}`) }>
           <Info>
             {`${q.id} • ${q.name}`}
           </Info>
@@ -39,6 +36,7 @@ const Wrapper = styled.div`
 `
 
 const QuestionWrapper = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   padding: 8px 12px;

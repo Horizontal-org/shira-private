@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
 import styled from 'styled-components'
 import { Explanations } from '../Explanations'
 import { AppsSelector } from '../AppsSelector'
@@ -18,17 +19,24 @@ interface Props {}
 
 export const Question: FunctionComponent<Props> = () => {
 
+  const { id } = useParams()
+
   const { 
     clearQuestion,
     clearApps,
     clearExplanations,
-    selectedApps
+    selectedApps,
+    fetchQuestion,
+    question
   } = useStore((state) => ({
     clearQuestion: state.clearQuestion,
     clearApps: state.clearSelectedApps,
     clearExplanations: state.clearExplanations,
-    selectedApps: state.selectedApps
+    selectedApps: state.selectedApps,
+    fetchQuestion: state.fetchQuestion,
+    question: state.question
   }), shallow)
+
 
   const [appType, handleAppType] = useState(null)
   const [name, handleName] = useState('')
@@ -43,6 +51,8 @@ export const Question: FunctionComponent<Props> = () => {
   }
 
   useEffect(() => {
+    fetchQuestion(id)
+
     subscribe('delete-explanation', (event) => {
       cleanDeletedExplanations(event.detail.deleteIndex)
     })
@@ -52,6 +62,16 @@ export const Question: FunctionComponent<Props> = () => {
       clear()
     }
   }, [])
+
+  useEffect(() => {
+    if(question && id) {
+      handleName(question.name)
+      handlePhising(question.isPhising === 1 ? true : false)
+      handleAppType(question.apps[0].type)
+    }
+  }, [question, id])
+
+  console.log(question)
   
   return (
     <div>
@@ -73,6 +93,7 @@ export const Question: FunctionComponent<Props> = () => {
             <Input 
               required={true}
               placeholder={'Name'}
+              value={name}
               onChange={(e) => { 
                 handleName(e.target.value)
               }}
@@ -138,7 +159,7 @@ export const Question: FunctionComponent<Props> = () => {
                 Selected apps
               </h3>
               <div>
-                <AppsSelector type={appType} />
+                <AppsSelector savedSelectedApps={question?.apps} type={appType} />
               </div>
               </>
             )}

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useStore } from '../store'
 import { useNavigate } from 'react-router-dom'
 import { App } from './app';
+import { Explanation } from '../store/slices/explanation';
 
 interface SubmitPayload {
   question: {
@@ -14,11 +15,18 @@ interface SubmitPayload {
     text: string;
   }
 }
-
 export interface Question {
   id: string;
   name: string;
   isPhising: number;
+}
+
+export interface QuestionPayload {
+  name: string
+  content: string
+  isPhising: number
+  apps: App[]
+  explanations: Explanation[]
 }
 
 export const fetchQuestions = async() => {
@@ -27,6 +35,15 @@ export const fetchQuestions = async() => {
     return res.data
   } catch (err) {
     console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
+  }
+}
+
+export const fetchQuestion = async(id: string) => {
+  try {
+    const res = await axios.get<QuestionPayload>(`${process.env.REACT_APP_API_URL}/question/${id}`) 
+    return res.data
+  } catch(err) {
+    console.log("🚀 ~ file: question.ts ~ line 37 ~ submit ~ err", err)   
   }
 }
 
