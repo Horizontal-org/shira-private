@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
+import { CustomElements } from '../../fetch/question'
 
 const RE_NUMERIC = /^[0-9\W]*$/
 
@@ -15,6 +16,7 @@ interface Props {
   required?: boolean;
   customRef?: React.MutableRefObject<HTMLInputElement>
   isPhoneNumber?: boolean
+  initialValue?: CustomElements
 }
 
 export const InputWithExplanation: FunctionComponent<Props> = ({
@@ -24,7 +26,8 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   onChange,
   required,
   customRef,
-  isPhoneNumber
+  isPhoneNumber,
+  initialValue
 }) => {
 
   const [value, setValue] = useState<string>('')
@@ -43,6 +46,14 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
 
   const inputRef = useRef<HTMLInputElement>()
   const ref = customRef || inputRef
+
+  useEffect(() => {
+    if(initialValue?.textContent || initialValue?.explanationPosition) {
+      setValue(initialValue?.textContent)
+
+      ref.current.setAttribute('data-explanation', initialValue?.explanationPosition)
+    }
+  }, [initialValue, ref])
 
   return (
     <div>

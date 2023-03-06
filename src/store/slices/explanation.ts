@@ -11,7 +11,7 @@ export interface ExplanationsSlice {
   selectedExplanation: number;
   // last explanation index
   explanationIndex: number;
-  addExplanation: (index: number) => void
+  addExplanation: (index: number, text?: string, position?: number) => void
   updateExplanation: (index: number, text: string, position?: number) => void
   updateExplanations: (explanations: Explanation[]) => void
   deleteExplanation: (index: number) => void
@@ -29,11 +29,15 @@ export const createExplanationsSlice: StateCreator<
   explanations: [],
   selectedExplanation: 0,
   explanationIndex: 0,
-  addExplanation: (index) => {
+  addExplanation: (index, text, position) => {
     set((state) => ({
       explanations: [
         ...state.explanations,
-        { index: index, text: '', position: index }
+        { 
+          index: index, 
+          text: text ?? '', 
+          position: position ?? index
+        }
       ],
       explanationIndex: index,
       selectedExplanation: index

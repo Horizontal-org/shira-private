@@ -9,9 +9,11 @@ import { Component } from '../../utils/dynamicComponents'
 import { Explanation } from '../../store/slices/explanation'
 import { publish } from '../../utils/customEvent'
 
-interface Props {}
+interface Props {
+  initialData?: Explanation[]
+}
 
-export const Explanations: FunctionComponent<Props> = () => {
+export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
 
   const {
     storeExplanations,
@@ -19,15 +21,23 @@ export const Explanations: FunctionComponent<Props> = () => {
     selectedExplanation,
     deleteExplanation,
     updateExplanation,
-    updateExplanations
+    updateExplanations,
+    addExplanation,
   } = useStore((state) => ({
     storeExplanations: state.explanations,
     changeSelected: state.changeSelected,
     selectedExplanation: state.selectedExplanation,
     updateExplanation: state.updateExplanation,
     updateExplanations: state.updateExplanations,
-    deleteExplanation: state.deleteExplanation
+    deleteExplanation: state.deleteExplanation,
+    addExplanation: state.addExplanation
   }), shallow)
+
+  useEffect(() => {
+    initialData?.forEach(init => {
+      addExplanation(init.index, init.text, init.position)
+    })
+  }, [initialData, addExplanation])
 
   const reorder = (list, startIndex, endIndex) => {
     const result: Explanation[] = Array.from(list);

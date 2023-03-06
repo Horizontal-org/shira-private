@@ -70,8 +70,6 @@ export const Question: FunctionComponent<Props> = () => {
       handleAppType(question.apps[0].type)
     }
   }, [question, id])
-
-  console.log(question)
   
   return (
     <div>
@@ -84,7 +82,11 @@ export const Question: FunctionComponent<Props> = () => {
         <SceneStructure>
           <ContentWrapper onSubmit={(e) => {
             e.preventDefault()
-            submit(name, phising)
+            if(id) {
+              console.log('editing')
+              return 
+            } 
+            return submit(name, phising)
           }}>
 
             <h3>
@@ -159,7 +161,7 @@ export const Question: FunctionComponent<Props> = () => {
                 Selected apps
               </h3>
               <div>
-                <AppsSelector savedSelectedApps={question?.apps} type={appType} />
+                <AppsSelector initialData={question?.apps} type={appType} />
               </div>
               </>
             )}
@@ -172,7 +174,8 @@ export const Question: FunctionComponent<Props> = () => {
                     Required content
                   </h3>
 
-                  <RequiredContent 
+                  <RequiredContent
+                    initialData={question?.content} 
                     type={appType}
                   />
 
@@ -190,13 +193,13 @@ export const Question: FunctionComponent<Props> = () => {
 
                   <div>
                     <Button 
-                      text="Submit"
+                      text={id ? 'Edit' : 'Submit'}
                     />
                   </div>
                 </DynamicContent>
 
                 <ExplanationsWrapper>
-                  <Explanations />
+                  <Explanations initialData={question?.explanations}/>
                 </ExplanationsWrapper>
               </DynamicContentWrapper>
             )}

@@ -7,10 +7,10 @@ import { App } from '../../fetch/app'
 
 interface Props {
   type: string
-  savedSelectedApps?: App[]
+  initialData?: App[]
 }
 
-export const AppsSelector:FunctionComponent<Props> = ({ type, savedSelectedApps }) => {
+export const AppsSelector:FunctionComponent<Props> = ({ type, initialData }) => {
 
   const {
     apps,
@@ -26,8 +26,8 @@ export const AppsSelector:FunctionComponent<Props> = ({ type, savedSelectedApps 
   const [selected, handleSelected] = useState([])
 
   useEffect(() => {
-    if(savedSelectedApps) {
-      const apps = savedSelectedApps.map((app: App) => app.id)
+    if(initialData) {
+      const apps = initialData.map((app: App) => app.id)
       setSelectedApps(apps)
       handleSelected(apps)
     }

@@ -6,10 +6,12 @@ import { MessagingContent } from './components/MessagingContent';
 
 interface Props {
   type: string;
+  initialData?: string
 }
 
 export const RequiredContent: FunctionComponent<Props> = ({
-  type
+  type,
+  initialData
 }) => {
 
   const setRequiredContent = useStore((state) => (state.setRequiredContent))
@@ -25,7 +27,7 @@ export const RequiredContent: FunctionComponent<Props> = ({
         <EmailContent onChange={parseHtml}/>
       )}
       { type === 'messaging' && (
-        <MessagingContent onChange={parseHtml}/>
+        <MessagingContent initialData={initialData} onChange={parseHtml}/>
       )}
     </div>
   )

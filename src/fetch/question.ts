@@ -29,6 +29,11 @@ export interface QuestionPayload {
   explanations: Explanation[]
 }
 
+export interface CustomElements {
+  textContent: string,
+  explanationPosition: string | null
+}
+
 export const fetchQuestions = async() => {
   try {
     const res = await axios.get<Question[]>(`${process.env.REACT_APP_API_URL}/question`) 
