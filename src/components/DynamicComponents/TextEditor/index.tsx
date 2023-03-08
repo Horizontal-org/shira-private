@@ -18,7 +18,7 @@ Highlight.configure({
   },
 })
 
-const defaultContent = `
+const defaultInitialContent = `
 <h2>
   Text
 </h2>
@@ -65,9 +65,10 @@ const cleanDeletedExplanations = (editor, deleteIndex) => {
 interface Props {
   componentId?: string;
   componentPosition?: string
+  initialContent?: string
 }
 
-export const TextEditor = ({ componentId, componentPosition }: Props) => {
+export const TextEditor = ({ componentId, componentPosition, initialContent }: Props) => {
 
   const {
     changeSelected,
@@ -82,6 +83,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
   }), shallow)
 
   const editorId = `component-text-${componentId}`
+
   const [rawHtml, handleRawHtml] = useState(null)
   const editor = useEditor({
     extensions: [
@@ -92,7 +94,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
         openOnClick: false,
       }),
     ],
-    content: defaultContent,
+    content: initialContent ?? defaultInitialContent,
     onSelectionUpdate(props) {      
       if (props.editor.isActive('explanation')) {
         props.editor.commands.extendMarkRange('explanation')
@@ -151,7 +153,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
   useEffect(() => {
     const parsed = `<div data-position='${componentPosition}' id='${editorId}'>${rawHtml}</div>`
     setContent(editorId, parsed)
-  }, [componentPosition, rawHtml])
+  }, [componentPosition, rawHtml, initialContent])
 
   return (
     <Wrapper>

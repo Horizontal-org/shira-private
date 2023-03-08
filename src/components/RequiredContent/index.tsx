@@ -24,7 +24,7 @@ export const RequiredContent: FunctionComponent<Props> = ({
   return (
     <div>
       { type === 'email' && (
-        <EmailContent onChange={parseHtml}/>
+        <EmailContent initialData={initialData} onChange={parseHtml}/>
       )}
       { type === 'messaging' && (
         <MessagingContent initialData={initialData} onChange={parseHtml}/>

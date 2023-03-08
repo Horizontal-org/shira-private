@@ -1,4 +1,4 @@
-import { cloneElement, FunctionComponent, ReactElement, ReactNode, SetStateAction, useState } from 'react'
+import { cloneElement, FunctionComponent, ReactElement, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styled from 'styled-components'
 import shallow from 'zustand/shallow';
@@ -9,9 +9,11 @@ import { AddComponent } from '../AddComponent'
 import { Attachment } from '../DynamicComponents/Attachment';
 import { TextEditor } from '../DynamicComponents/TextEditor'
 import { DragItem } from './components/DragItem';
+import useParseHTML from '../../hooks/useParseHtml';
 
 interface Props {
   appType: string;
+  initialContent?: string;
 }
 
 
@@ -44,9 +46,13 @@ const validate = (appType, componentType, comps) => {
 }
 
 export const QuestionContent: FunctionComponent<Props> = ({
-  appType
+  appType,
+  initialContent
 }) => {
 
+  const { parseDynamicContent } = useParseHTML(initialContent)
+
+  
   const {
     lastIndex, 
     setLastIndex ,
@@ -68,6 +74,20 @@ export const QuestionContent: FunctionComponent<Props> = ({
   ]) 
 
 
+  useEffect(() => {
+    if(initialContent) {
+      const init = parseDynamicContent()
+      const parsedComponents = init.map(component => {
+        const node = component.type === 'text' ? (<TextEditor />) : (<Attachment/>)
+
+        return {
+          ...component,
+          node
+        }
+      })
+      handleComponents(parsedComponents)
+    }
+  }, [initialContent])
   const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
@@ -98,7 +118,7 @@ export const QuestionContent: FunctionComponent<Props> = ({
                     key={c.position + ''} 
                     id={c.position + ''}   
                     index={i}  
-                    component={cloneElement(c.node, { componentId: c.position, componentPosition: i })}
+                    component={cloneElement(c.node, { componentId: c.position, componentPosition: i, initialContent: c.content })}
                     onDelete={() => {                       
                       deleteExplanations(c.position, c.type)
                       deleteContent(`component-${c.type}-${c.position}`)

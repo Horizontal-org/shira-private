@@ -83,7 +83,6 @@ export const Question: FunctionComponent<Props> = () => {
           <ContentWrapper onSubmit={(e) => {
             e.preventDefault()
             if(id) {
-              console.log('editing')
               return 
             } 
             return submit(name, phising)
@@ -184,10 +183,12 @@ export const Question: FunctionComponent<Props> = () => {
                   </h3>
                   
                   <OptionalContent 
+                    initialData={question?.content}
                     type={appType}
                   />
 
                   <QuestionContent 
+                    initialContent={question?.content}
                     appType={appType}
                   />
 
