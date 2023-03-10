@@ -14,6 +14,7 @@ import shallow from 'zustand/shallow'
 import { Link } from 'react-router-dom'
 import { subscribe, unsubscribe } from '../../utils/customEvent'
 import { cleanDeletedExplanations } from '../../utils/explanations'
+import { FieldsOfWorkSelector } from '../FieldsOfWorkSelector'
 
 interface Props {}
 
@@ -23,11 +24,13 @@ export const Question: FunctionComponent<Props> = () => {
     clearQuestion,
     clearApps,
     clearExplanations,
-    selectedApps
+    selectedApps,
+    clearFieldsOfWork
   } = useStore((state) => ({
     clearQuestion: state.clearQuestion,
     clearApps: state.clearSelectedApps,
     clearExplanations: state.clearExplanations,
+    clearFieldsOfWork: state.clearSelectedFieldsOfWork,
     selectedApps: state.selectedApps
   }), shallow)
 
@@ -39,6 +42,7 @@ export const Question: FunctionComponent<Props> = () => {
     clearQuestion()
     clearApps()
     clearExplanations()
+    clearFieldsOfWork()
   }
 
   useEffect(() => {
@@ -133,12 +137,19 @@ export const Question: FunctionComponent<Props> = () => {
 
             { appType && (
               <>
-              <h3>
-                Selected apps
-              </h3>
-              <div>
-                <AppsSelector type={appType} />
-              </div>
+                <h3>
+                  Selected apps
+                </h3>
+                <div>
+                  <AppsSelector type={appType} />
+                </div>
+
+                <h3>
+                  Selected fields of work
+                </h3>
+                <div>
+                  <FieldsOfWorkSelector />
+                </div>
               </>
             )}
             

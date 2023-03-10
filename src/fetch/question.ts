@@ -43,6 +43,7 @@ export const submit = async(name, phising) => {
   const {
     explanations,
     selectedApps,
+    selectedFieldsOfWork,
     content,
     optionalContent,
     requiredContent
@@ -67,7 +68,8 @@ export const submit = async(name, phising) => {
       name: name,
       content: finalContent,
       isPhishing: phising,
-      apps: selectedApps
+      apps: selectedApps,
+      fieldOfWork: selectedFieldsOfWork
     },
     explanations: explanations.map((e) => {
       return {
