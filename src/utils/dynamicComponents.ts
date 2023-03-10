@@ -3,8 +3,9 @@ import { ReactElement } from "react"
 export interface Component {
   node: ReactElement
   type: string
-  position: number,
+  position: number
   content?: string
+  componentId?: number
 }
 
 

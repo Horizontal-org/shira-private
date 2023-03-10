@@ -65,7 +65,11 @@ export const useSubmit = () => {
 
   const navigate = useNavigate()
 
-  const submit = async (name, phising) => {
+  const submit = async (
+    name: string, 
+    phising: boolean,
+    id?: string
+    ) => {
     const {
       explanations,
       selectedApps,
@@ -105,8 +109,15 @@ export const useSubmit = () => {
     }
   
     try {
-      await axios.post<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question`, payload)
-      alert('Question created')
+      if(!id) {
+        await axios.post<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question`, payload)
+        alert('Question created')
+      }
+
+      if(id) {
+        await axios.patch<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question/${id}`, payload)
+        alert('Question edited')
+      }
       navigate("/")
     } catch (err) {
       console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    

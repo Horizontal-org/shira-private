@@ -26,11 +26,6 @@ export const AppsSelector:FunctionComponent<Props> = ({ type, initialData }) => 
   const [selected, handleSelected] = useState([])
 
   useEffect(() => {
-    if(initialData) {
-      const apps = initialData.map((app: App) => app.id)
-      setSelectedApps(apps)
-      handleSelected(apps)
-    }
     fetchApp()
   }, [])
 

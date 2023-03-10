@@ -22,7 +22,7 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     deleteExplanation,
     updateExplanation,
     updateExplanations,
-    addExplanation,
+    setInitialExplanations
   } = useStore((state) => ({
     storeExplanations: state.explanations,
     changeSelected: state.changeSelected,
@@ -30,14 +30,14 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     updateExplanation: state.updateExplanation,
     updateExplanations: state.updateExplanations,
     deleteExplanation: state.deleteExplanation,
-    addExplanation: state.addExplanation
+    addExplanation: state.addExplanation,
+    setInitialExplanations: state.setInitialExplanations
   }), shallow)
 
   useEffect(() => {
-    initialData?.forEach(init => {
-      addExplanation(init.index, init.text, init.position)
-    })
-  }, [initialData, addExplanation])
+    const initialExplanations = initialData?.map(init => init) ?? []
+    setInitialExplanations(initialExplanations)
+  }, [initialData])
 
   const reorder = (list, startIndex, endIndex) => {
     const result: Explanation[] = Array.from(list);

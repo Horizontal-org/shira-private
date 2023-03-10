@@ -14,6 +14,7 @@ import shallow from 'zustand/shallow'
 import { Link } from 'react-router-dom'
 import { subscribe, unsubscribe } from '../../utils/customEvent'
 import { cleanDeletedExplanations } from '../../utils/explanations'
+import { App } from '../../fetch/app'
 
 interface Props {}
 
@@ -27,12 +28,14 @@ export const Question: FunctionComponent<Props> = () => {
     clearExplanations,
     selectedApps,
     fetchQuestion,
-    question
+    question,
+    setSelectedApps
   } = useStore((state) => ({
     clearQuestion: state.clearQuestion,
     clearApps: state.clearSelectedApps,
     clearExplanations: state.clearExplanations,
     selectedApps: state.selectedApps,
+    setSelectedApps: state.setSelectedApps,
     fetchQuestion: state.fetchQuestion,
     question: state.question
   }), shallow)
@@ -68,6 +71,7 @@ export const Question: FunctionComponent<Props> = () => {
       handleName(question.name)
       handlePhising(question.isPhising === 1 ? true : false)
       handleAppType(question.apps[0].type)
+      setSelectedApps(question?.apps?.map((app: App)=> app.id))
     }
   }, [question, id])
   
@@ -83,7 +87,7 @@ export const Question: FunctionComponent<Props> = () => {
           <ContentWrapper onSubmit={(e) => {
             e.preventDefault()
             if(id) {
-              return 
+              return submit(name, phising, id)
             } 
             return submit(name, phising)
           }}>
@@ -194,7 +198,7 @@ export const Question: FunctionComponent<Props> = () => {
 
                   <div>
                     <Button 
-                      text={id ? 'Edit' : 'Submit'}
+                      text={id ? 'Save' : 'Submit'}
                     />
                   </div>
                 </DynamicContent>

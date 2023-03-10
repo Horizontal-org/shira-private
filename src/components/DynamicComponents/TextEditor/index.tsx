@@ -69,7 +69,7 @@ interface Props {
 }
 
 export const TextEditor = ({ componentId, componentPosition, initialContent }: Props) => {
-
+  console.log(componentId, componentPosition, initialContent)
   const {
     changeSelected,
     selectedExplanation,
@@ -84,6 +84,9 @@ export const TextEditor = ({ componentId, componentPosition, initialContent }: P
 
   const editorId = `component-text-${componentId}`
 
+  const [content, handleContent] = useState(initialContent ?? defaultInitialContent);
+
+
   const [rawHtml, handleRawHtml] = useState(null)
   const editor = useEditor({
     extensions: [
@@ -94,7 +97,7 @@ export const TextEditor = ({ componentId, componentPosition, initialContent }: P
         openOnClick: false,
       }),
     ],
-    content: initialContent ?? defaultInitialContent,
+    content,
     onSelectionUpdate(props) {      
       if (props.editor.isActive('explanation')) {
         props.editor.commands.extendMarkRange('explanation')
@@ -153,7 +156,15 @@ export const TextEditor = ({ componentId, componentPosition, initialContent }: P
   useEffect(() => {
     const parsed = `<div data-position='${componentPosition}' id='${editorId}'>${rawHtml}</div>`
     setContent(editorId, parsed)
-  }, [componentPosition, rawHtml, initialContent])
+  }, [componentPosition, rawHtml])
+
+  useEffect(() => {
+    if(initialContent) {
+      console.log(initialContent)
+      handleContent(initialContent)
+      editor?.commands?.setContent(initialContent)
+    }
+  }, [initialContent])
 
   return (
     <Wrapper>
