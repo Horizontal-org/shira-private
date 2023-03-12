@@ -30,13 +30,14 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     updateExplanation: state.updateExplanation,
     updateExplanations: state.updateExplanations,
     deleteExplanation: state.deleteExplanation,
-    addExplanation: state.addExplanation,
     setInitialExplanations: state.setInitialExplanations
   }), shallow)
 
   useEffect(() => {
-    const initialExplanations = initialData?.map(init => init) ?? []
-    setInitialExplanations(initialExplanations)
+    if(initialData?.length > 0) {
+      const initialExplanations = initialData?.map(init => init)
+      setInitialExplanations(initialExplanations)
+    }
   }, [initialData])
 
   const reorder = (list, startIndex, endIndex) => {

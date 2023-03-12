@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import { subscribe, unsubscribe } from '../../utils/customEvent'
 import { cleanDeletedExplanations } from '../../utils/explanations'
 import { App } from '../../fetch/app'
+import { parseDynamicContent } from '../../hooks/useParseHtml'
 
 interface Props {}
 
@@ -191,10 +192,18 @@ export const Question: FunctionComponent<Props> = () => {
                     type={appType}
                   />
 
-                  <QuestionContent 
-                    initialContent={question?.content}
-                    appType={appType}
-                  />
+                  {id && question?.content && (
+                    <QuestionContent 
+                      initialContent={parseDynamicContent(question.content)}
+                      appType={appType}
+                    />
+                  )}
+
+                  {!id && (
+                     <QuestionContent
+                      appType={appType}
+                    />
+                  )}
 
                   <div>
                     <Button 

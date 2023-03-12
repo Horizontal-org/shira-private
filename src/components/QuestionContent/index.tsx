@@ -1,5 +1,5 @@
-import { cloneElement, FunctionComponent, ReactElement, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { cloneElement, FunctionComponent, useEffect, useState } from 'react'
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from 'styled-components'
 import shallow from 'zustand/shallow';
 import { useStore } from '../../store';
@@ -9,11 +9,15 @@ import { AddComponent } from '../AddComponent'
 import { Attachment } from '../DynamicComponents/Attachment';
 import { TextEditor } from '../DynamicComponents/TextEditor'
 import { DragItem } from './components/DragItem';
-import useParseHTML from '../../hooks/useParseHtml';
 
 interface Props {
   appType: string;
-  initialContent?: string;
+  initialContent?: {
+    position: number;
+    type: string;
+    content: string;
+    node: JSX.Element;
+}[]
 }
 
 
@@ -50,8 +54,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
   initialContent
 }) => {
 
-  const { parseDynamicContent } = useParseHTML(initialContent)
-
   
   const {
     lastIndex, 
@@ -65,7 +67,7 @@ export const QuestionContent: FunctionComponent<Props> = ({
     deleteContent: state.deleteContent
   }), shallow)
 
-  const [components, handleComponents] = useState<Component[]>([
+  const [components, handleComponents] = useState<Component[]>(initialContent ?? [
     {
       node: (<TextEditor/>),
       type: 'text',
@@ -73,21 +75,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
     },
   ]) 
 
-
-  useEffect(() => {
-    if(initialContent) {
-      const init = parseDynamicContent()
-      const parsedComponents = init.map(component => {
-        const node = component.type === 'text' ? (<TextEditor />) : (<Attachment/>)
-
-        return {
-          ...component,
-          node
-        }
-      })
-      handleComponents(parsedComponents)
-    }
-  }, [initialContent])
   const onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
@@ -159,5 +146,3 @@ export const QuestionContent: FunctionComponent<Props> = ({
 const DynamicContent = styled.div`
   padding-bottom: 8px;
 `
-
-const Content = styled.div``

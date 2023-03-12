@@ -51,7 +51,10 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
     if(initialValue?.textContent || initialValue?.explanationPosition) {
       setValue(initialValue?.textContent)
 
-      ref.current.setAttribute('data-explanation', initialValue?.explanationPosition)
+      if(initialValue?.explanationPosition) {
+        ref.current.setAttribute('data-explanation', initialValue?.explanationPosition)
+      }
+      ref.current.value=initialValue?.textContent
 
       onChange(initialValue?.explanationPosition, initialValue?.textContent)
     }

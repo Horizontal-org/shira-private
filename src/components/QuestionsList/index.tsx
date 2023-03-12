@@ -11,7 +11,7 @@ export const QuestionsList = ({ questions }) => {
   return (
     <Wrapper>
       {questions.map((q) => (
-        <QuestionWrapper key={q.id} onClick={() => navigate(`question/${q.id}`) }>
+        <QuestionWrapper key={q.id}>
           <Info>
             {`${q.id} • ${q.name}`}
           </Info>
@@ -19,6 +19,7 @@ export const QuestionsList = ({ questions }) => {
             <Phishing 
               is={q.isPhising}
             >{q.isPhising ? 'Phising' : 'Legitimate'}</Phishing>  
+            <Button text="Edit"  onClick={() => navigate(`question/${q.id}`) } />
             <Button text="Delete" onClick={async() => {
               if(window.confirm('Sure you want to delete this question?')){
                 await deleteQuestion(q.id)
@@ -36,7 +37,6 @@ const Wrapper = styled.div`
 `
 
 const QuestionWrapper = styled.div`
-  cursor: pointer;
   display: flex;
   align-items: center;
   padding: 8px 12px;
@@ -61,6 +61,7 @@ const Phishing = styled.div`
 
 const Right = styled.div`
   display: flex; 
+  justify-content: space-between;
   > div {
     width: 100px;
   }

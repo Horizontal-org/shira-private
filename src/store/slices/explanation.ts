@@ -47,8 +47,8 @@ export const createExplanationsSlice: StateCreator<
   setInitialExplanations: (explanations: Explanation[]) => {
     set(() => ({
       explanations,
-      explanationIndex: 0,
-      selectedExplanation: 0
+      explanationIndex: explanations.length,
+      selectedExplanation: explanations.length
     }))
   },
   deleteExplanation: (index) => {
