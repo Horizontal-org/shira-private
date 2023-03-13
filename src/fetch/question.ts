@@ -118,7 +118,8 @@ export const useSubmit = () => {
         await axios.patch<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question/${id}`, payload)
         alert('Question edited')
       }
-      navigate("/")
+      // navigate("/")
+      window.location.replace('/')
     } catch (err) {
       console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
     }

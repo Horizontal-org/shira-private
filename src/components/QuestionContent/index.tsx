@@ -59,7 +59,7 @@ export const QuestionContent: FunctionComponent<Props> = ({
     lastIndex, 
     setLastIndex ,
     deleteExplanations,
-    deleteContent
+    deleteContent,
   } = useStore((state) => ({
     lastIndex: state.lastIndex,
     setLastIndex: state.setLastIndex,
@@ -74,6 +74,12 @@ export const QuestionContent: FunctionComponent<Props> = ({
       position: lastIndex
     },
   ]) 
+
+  useEffect(() => {
+    console.log(components)
+    setLastIndex(components.length)
+    console.log(lastIndex)
+  }, [])
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -106,11 +112,17 @@ export const QuestionContent: FunctionComponent<Props> = ({
                     id={c.position + ''}   
                     index={i}  
                     component={cloneElement(c.node, { componentId: c.position, componentPosition: i, initialContent: c.content })}
-                    onDelete={() => {                       
+                    onDelete={() => {    
+                      console.log(c.position, c.type)                   
                       deleteExplanations(c.position, c.type)
+                      console.log(`component-${c.type}-${c.position}`)
+                      console.log(components)
                       deleteContent(`component-${c.type}-${c.position}`)
                       const newComponents = components.filter(cf => cf.position !== c.position)
+                      // console.log(newComponents)
                       handleComponents([...newComponents])
+                      setLastIndex(newComponents.length)
+                      console.log(lastIndex)
                     }}
                   />
                 ))) }
@@ -127,11 +139,15 @@ export const QuestionContent: FunctionComponent<Props> = ({
           if (validate(appType, componentType, components)) {
             const newComponents = [...components]
             const newIndex = lastIndex + 1
+
+            console.log(lastIndex)
   
             let findComponent = {
               ...componentsList.find((c) => c.type === componentType),
               position: newIndex,
             }
+
+            console.log(findComponent)
   
             setLastIndex(newIndex)
             newComponents.push(findComponent)

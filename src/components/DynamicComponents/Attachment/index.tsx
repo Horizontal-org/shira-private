@@ -50,35 +50,10 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
             initialValue={parseCustomElement(`component-attachment-${componentId}`)}
             required={true}
             onChange={(expl, value) => {
-              // onChange(expl, value, 'component-required-sender-name')
               parseHtml()
             }}
           />
-
-          {/* <Input
-            id={`component-attachment-${componentId}`} 
-            ref={inputRef}
-            placeholder={'Attachment name'}
-            onChange={(e) => { 
-              parseHtml()
-             }}
-            onFocus={() => {
-              const isSelected = inputRef.current.getAttribute('data-explanation')
-              if (isSelected) {
-                changeSelected(parseInt(isSelected))
-              }
-            }}
-          /> */}
         </InputWrapper>
-        {/* <ExplanationButton
-          active={inputRef.current && selectedExplanationIndex + '' == inputRef.current.getAttribute('data-explanation')}
-          onClick={() => { 
-            const index = explanationIndex + 1
-            inputRef.current.setAttribute('data-explanation', index + '')
-            addExplanation(index)
-            parseHtml()
-          }}
-        /> */}
       </Separator>
     </Wrapper>
   )

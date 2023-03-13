@@ -89,7 +89,7 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
                   component={(
                     <ExplanationBox
                       key={e.index}
-                      selected={e.index === selectedExplanation}
+                      selected={+e.index === selectedExplanation}
                       onClick={() => {
                         changeSelected(e.index)
                       }}
