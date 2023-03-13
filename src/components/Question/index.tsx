@@ -165,7 +165,7 @@ export const Question: FunctionComponent<Props> = () => {
                 Selected apps
               </h3>
               <div>
-                <AppsSelector initialData={question?.apps} type={appType} />
+                <AppsSelector type={appType} />
               </div>
               </>
             )}

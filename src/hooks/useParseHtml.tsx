@@ -17,26 +17,6 @@ const useParseHTML = (
   
     const parseContent = (): HTMLElement => html.querySelector('[id*="component-text"]')
   
-    const parseDynamicContent = () => {
-      const dynamicContent = html.getElementById("dynamic-content")
-
-      const childNodes = Array.from(dynamicContent.childNodes).map((node: Element) =>{
-        const type = node.getAttribute('id').includes('component-text')
-        ? 'text' 
-        :  'attachment'
-        
-        return {
-          position: parseInt(node.getAttribute('id').split('-')[2]),
-          type,
-          content: type === 'text' ? node.innerHTML: node.outerHTML
-
-        }
-      });
-
-      return childNodes
-      
-    }
-  
     return {
       parseCustomElement,
       parseContent
@@ -48,6 +28,9 @@ const useParseHTML = (
     const dynamicContent = html.getElementById("dynamic-content")
 
     const childNodes = Array.from(dynamicContent.childNodes).map((node: Element) =>{
+      const dataPosition = node.getAttribute('data-position')
+
+      console.log(dataPosition, node.innerHTML)
       const type = node.getAttribute('id').includes('component-text')
       ? 'text' 
       :  'attachment'
@@ -56,12 +39,12 @@ const useParseHTML = (
         position: parseInt(node.getAttribute('id').split('-')[2]),
         type,
         content: type === 'text' ? node.innerHTML: node.outerHTML,
-        node: type === 'text' ? (<TextEditor />) : (<Attachment/>)
-
+        node: type === 'text' ? (<TextEditor />) : (<Attachment/>),
+        dataPosition: +node.getAttribute('data-position')
       }
     });
-
-    return childNodes
+    console.log(childNodes)
+    return childNodes.sort((a, b) => a.dataPosition -b.dataPosition)
     
   }
   

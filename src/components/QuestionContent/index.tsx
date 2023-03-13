@@ -17,7 +17,7 @@ interface Props {
     type: string;
     content: string;
     node: JSX.Element;
-}[]
+  }[];
 }
 
 
@@ -53,8 +53,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
   appType,
   initialContent
 }) => {
-
-  
   const {
     lastIndex, 
     setLastIndex ,
@@ -76,9 +74,7 @@ export const QuestionContent: FunctionComponent<Props> = ({
   ]) 
 
   useEffect(() => {
-    console.log(components)
     setLastIndex(components.length)
-    console.log(lastIndex)
   }, [])
 
   const onDragEnd = (result) => {
@@ -108,23 +104,22 @@ export const QuestionContent: FunctionComponent<Props> = ({
               >          
                 { components.map(((c, i) => (
                   <DragItem 
-                    key={c.position + ''} 
-                    id={c.position + ''}   
-                    index={i}  
-                    component={cloneElement(c.node, { componentId: c.position, componentPosition: i, initialContent: c.content })}
-                    onDelete={() => {    
-                      console.log(c.position, c.type)                   
-                      deleteExplanations(c.position, c.type)
-                      console.log(`component-${c.type}-${c.position}`)
-                      console.log(components)
-                      deleteContent(`component-${c.type}-${c.position}`)
-                      const newComponents = components.filter(cf => cf.position !== c.position)
-                      // console.log(newComponents)
-                      handleComponents([...newComponents])
-                      setLastIndex(newComponents.length)
-                      console.log(lastIndex)
-                    }}
-                  />
+                  key={c.position + ''} 
+                  id={c.position + ''}   
+                  index={i}  
+                  component={cloneElement(c.node, { 
+                    componentId: c.position,
+                    componentPosition: i,
+                    initialContent: c.content 
+                  })}
+                  onDelete={() => {
+                    const newComponents = components.filter(cf => cf.position !== c.position)                
+                    handleComponents(newComponents)
+                    setLastIndex(newComponents.length)
+                    deleteExplanations(c.position, c.type)
+                    deleteContent(`component-${c.type}-${c.position}`)
+                  }}
+                />
                 ))) }
                 { provided.placeholder }
               </div>
@@ -146,8 +141,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
               ...componentsList.find((c) => c.type === componentType),
               position: newIndex,
             }
-
-            console.log(findComponent)
   
             setLastIndex(newIndex)
             newComponents.push(findComponent)

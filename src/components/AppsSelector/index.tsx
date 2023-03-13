@@ -3,14 +3,12 @@ import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import { AppItem } from '../AppItem'
-import { App } from '../../fetch/app'
 
 interface Props {
   type: string
-  initialData?: App[]
 }
 
-export const AppsSelector:FunctionComponent<Props> = ({ type, initialData }) => {
+export const AppsSelector:FunctionComponent<Props> = ({ type }) => {
 
   const {
     apps,

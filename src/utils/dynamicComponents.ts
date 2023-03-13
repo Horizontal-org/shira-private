@@ -5,7 +5,7 @@ export interface Component {
   type: string
   position: number
   content?: string
-  componentId?: number
+  dataPosition?: number
 }
 
 
