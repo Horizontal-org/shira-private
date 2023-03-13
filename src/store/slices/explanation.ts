@@ -69,9 +69,8 @@ export const createExplanationsSlice: StateCreator<
       const dataExplanation = parseInt(e.getAttribute('data-explanation'))
       toDelete.push(dataExplanation)
     })
-    
     set((state) => ({
-      explanations: state.explanations.filter(e => !toDelete.includes(e.index))
+      explanations: state.explanations.filter(e => !toDelete.includes(+e.index))
     }))
   },
   updateExplanation: (index, text, position) => {

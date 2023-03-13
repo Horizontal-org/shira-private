@@ -39,7 +39,7 @@ const markExplanations = (editorId, selectedExplanation) => {
     explanations.forEach((e) => {
       //TODO Multiple marks per explanation
       const dataExplanation = e.getAttribute('data-explanation')
-      if (parseInt(dataExplanation) === selectedExplanation) {          
+      if (parseInt(dataExplanation) === +selectedExplanation) {          
         e.classList.add('mark-active')
       }
     })
@@ -52,7 +52,7 @@ const cleanDeletedExplanations = (editor, deleteIndex) => {
     editor.state.doc.descendants((node, pos) => {
       node.marks.forEach(mark => {
         if (mark.attrs['data-explanation']) {
-          if (mark.attrs['data-explanation'] === deleteIndex) {
+          if (mark.attrs['data-explanation'] === +deleteIndex) {
             editor.chain().focus().setTextSelection(pos + 1).run()
             editor.chain().focus().unsetExplanation().run()
           }
