@@ -134,8 +134,6 @@ export const QuestionContent: FunctionComponent<Props> = ({
           if (validate(appType, componentType, components)) {
             const newComponents = [...components]
             const newIndex = lastIndex + 1
-
-            console.log(lastIndex)
   
             let findComponent = {
               ...componentsList.find((c) => c.type === componentType),

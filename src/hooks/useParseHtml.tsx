@@ -28,9 +28,6 @@ const useParseHTML = (
     const dynamicContent = html.getElementById("dynamic-content")
 
     const childNodes = Array.from(dynamicContent.childNodes).map((node: Element) =>{
-      const dataPosition = node.getAttribute('data-position')
-
-      console.log(dataPosition, node.innerHTML)
       const type = node.getAttribute('id').includes('component-text')
       ? 'text' 
       :  'attachment'
@@ -43,7 +40,6 @@ const useParseHTML = (
         dataPosition: +node.getAttribute('data-position')
       }
     });
-    console.log(childNodes)
     return childNodes.sort((a, b) => a.dataPosition -b.dataPosition)
     
   }
