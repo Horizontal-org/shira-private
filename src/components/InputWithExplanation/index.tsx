@@ -6,7 +6,9 @@ import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
 import { CustomElements } from '../../fetch/question'
 
-const RE_NUMERIC = /^[0-9\W]*$/
+const RE_VALIDATIONS = {
+  phone:  /^[0-9\W]*$/
+}
 
 interface Props {
   placeholder?: string;
@@ -15,8 +17,8 @@ interface Props {
   onChange?: (expl, value) => void
   required?: boolean;
   customRef?: React.MutableRefObject<HTMLInputElement>
-  isPhoneNumber?: boolean
   initialValue?: CustomElements
+  validation?: string
 }
 
 export const InputWithExplanation: FunctionComponent<Props> = ({
@@ -26,8 +28,8 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   onChange,
   required,
   customRef,
-  isPhoneNumber,
-  initialValue
+  initialValue,
+  validation
 }) => {
 
   const [value, setValue] = useState<string>('')
@@ -71,7 +73,7 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
           value={value}
           placeholder={placeholder}
           onChange={() => { 
-            if(isPhoneNumber && !RE_NUMERIC.test(ref.current.value)) return
+            if(RE_VALIDATIONS[validation] && !RE_VALIDATIONS[validation]?.test(ref.current.value)) return
             setValue(ref.current.value)
             onChange(
               ref.current.getAttribute('data-explanation'),

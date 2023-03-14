@@ -21,7 +21,7 @@ export const MessagingContent: FunctionComponent<Props> = ({ onChange, initialDa
           onChange={(expl, value) => {
             onChange(expl, value, 'component-required-phone')
           }}
-          isPhoneNumber={true}
+          validation='phone'
         />
       </div>
 
