@@ -27,6 +27,7 @@ export interface QuestionPayload {
   isPhising: number
   apps: App[]
   explanations: Explanation[]
+  fieldOfWorkId: number
 }
 
 export interface CustomElements {
@@ -63,8 +64,6 @@ export const deleteQuestion = async(id) => {
 
 export const useSubmit = () => {
 
-  const navigate = useNavigate()
-
   const submit = async (
     name: string, 
     phising: boolean,
@@ -73,6 +72,7 @@ export const useSubmit = () => {
     const {
       explanations,
       selectedApps,
+      selectedFieldsOfWork,
       content,
       optionalContent,
       requiredContent
@@ -97,7 +97,8 @@ export const useSubmit = () => {
         name: name,
         content: finalContent,
         isPhishing: phising,
-        apps: selectedApps
+        apps: selectedApps,
+        fieldOfWork: selectedFieldsOfWork
       },
       explanations: explanations.map((e) => {
         return {
