@@ -1,5 +1,5 @@
-import { cloneElement, FunctionComponent, ReactElement, ReactNode, SetStateAction, useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { cloneElement, FunctionComponent, useEffect, useState } from 'react'
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from 'styled-components'
 import shallow from 'zustand/shallow';
 import { useStore } from '../../store';
@@ -12,6 +12,12 @@ import { DragItem } from './components/DragItem';
 
 interface Props {
   appType: string;
+  initialContent?: {
+    position: number;
+    type: string;
+    content: string;
+    node: JSX.Element;
+  }[];
 }
 
 
@@ -44,14 +50,14 @@ const validate = (appType, componentType, comps) => {
 }
 
 export const QuestionContent: FunctionComponent<Props> = ({
-  appType
+  appType,
+  initialContent
 }) => {
-
   const {
     lastIndex, 
     setLastIndex ,
     deleteExplanations,
-    deleteContent
+    deleteContent,
   } = useStore((state) => ({
     lastIndex: state.lastIndex,
     setLastIndex: state.setLastIndex,
@@ -59,7 +65,7 @@ export const QuestionContent: FunctionComponent<Props> = ({
     deleteContent: state.deleteContent
   }), shallow)
 
-  const [components, handleComponents] = useState<Component[]>([
+  const [components, handleComponents] = useState<Component[]>(initialContent ?? [
     {
       node: (<TextEditor/>),
       type: 'text',
@@ -67,6 +73,9 @@ export const QuestionContent: FunctionComponent<Props> = ({
     },
   ]) 
 
+  useEffect(() => {
+    setLastIndex(components.length)
+  }, [])
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -95,17 +104,22 @@ export const QuestionContent: FunctionComponent<Props> = ({
               >          
                 { components.map(((c, i) => (
                   <DragItem 
-                    key={c.position + ''} 
-                    id={c.position + ''}   
-                    index={i}  
-                    component={cloneElement(c.node, { componentId: c.position, componentPosition: i })}
-                    onDelete={() => {                       
-                      deleteExplanations(c.position, c.type)
-                      deleteContent(`component-${c.type}-${c.position}`)
-                      const newComponents = components.filter(cf => cf.position !== c.position)
-                      handleComponents([...newComponents])
-                    }}
-                  />
+                  key={c.position + ''} 
+                  id={c.position + ''}   
+                  index={i}  
+                  component={cloneElement(c.node, { 
+                    componentId: c.position,
+                    componentPosition: i,
+                    initialContent: c.content 
+                  })}
+                  onDelete={() => {
+                    const newComponents = components.filter(cf => cf.position !== c.position)                
+                    handleComponents(newComponents)
+                    setLastIndex(newComponents.length)
+                    deleteExplanations(c.position, c.type)
+                    deleteContent(`component-${c.type}-${c.position}`)
+                  }}
+                />
                 ))) }
                 { provided.placeholder }
               </div>
@@ -139,5 +153,3 @@ export const QuestionContent: FunctionComponent<Props> = ({
 const DynamicContent = styled.div`
   padding-bottom: 8px;
 `
-
-const Content = styled.div``

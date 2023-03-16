@@ -9,9 +9,11 @@ import { Component } from '../../utils/dynamicComponents'
 import { Explanation } from '../../store/slices/explanation'
 import { publish } from '../../utils/customEvent'
 
-interface Props {}
+interface Props {
+  initialData?: Explanation[]
+}
 
-export const Explanations: FunctionComponent<Props> = () => {
+export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
 
   const {
     storeExplanations,
@@ -19,15 +21,24 @@ export const Explanations: FunctionComponent<Props> = () => {
     selectedExplanation,
     deleteExplanation,
     updateExplanation,
-    updateExplanations
+    updateExplanations,
+    setInitialExplanations
   } = useStore((state) => ({
     storeExplanations: state.explanations,
     changeSelected: state.changeSelected,
     selectedExplanation: state.selectedExplanation,
     updateExplanation: state.updateExplanation,
     updateExplanations: state.updateExplanations,
-    deleteExplanation: state.deleteExplanation
+    deleteExplanation: state.deleteExplanation,
+    setInitialExplanations: state.setInitialExplanations
   }), shallow)
+
+  useEffect(() => {
+    if(initialData?.length > 0) {
+      const initialExplanations = initialData?.map(init => init)
+      setInitialExplanations(initialExplanations)
+    }
+  }, [initialData])
 
   const reorder = (list, startIndex, endIndex) => {
     const result: Explanation[] = Array.from(list);
@@ -78,7 +89,7 @@ export const Explanations: FunctionComponent<Props> = () => {
                   component={(
                     <ExplanationBox
                       key={e.index}
-                      selected={e.index === selectedExplanation}
+                      selected={+e.index === selectedExplanation}
                       onClick={() => {
                         changeSelected(e.index)
                       }}

@@ -18,7 +18,7 @@ Highlight.configure({
   },
 })
 
-const defaultContent = `
+const defaultInitialContent = `
 <h2>
   Text
 </h2>
@@ -39,7 +39,7 @@ const markExplanations = (editorId, selectedExplanation) => {
     explanations.forEach((e) => {
       //TODO Multiple marks per explanation
       const dataExplanation = e.getAttribute('data-explanation')
-      if (parseInt(dataExplanation) === selectedExplanation) {          
+      if (parseInt(dataExplanation) === +selectedExplanation) {          
         e.classList.add('mark-active')
       }
     })
@@ -52,7 +52,7 @@ const cleanDeletedExplanations = (editor, deleteIndex) => {
     editor.state.doc.descendants((node, pos) => {
       node.marks.forEach(mark => {
         if (mark.attrs['data-explanation']) {
-          if (mark.attrs['data-explanation'] === deleteIndex) {
+          if (mark.attrs['data-explanation'] === +deleteIndex) {
             editor.chain().focus().setTextSelection(pos + 1).run()
             editor.chain().focus().unsetExplanation().run()
           }
@@ -65,10 +65,10 @@ const cleanDeletedExplanations = (editor, deleteIndex) => {
 interface Props {
   componentId?: string;
   componentPosition?: string
+  initialContent?: string
 }
 
-export const TextEditor = ({ componentId, componentPosition }: Props) => {
-
+export const TextEditor = ({ componentId, componentPosition, initialContent }: Props) => {
   const {
     changeSelected,
     selectedExplanation,
@@ -82,6 +82,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
   }), shallow)
 
   const editorId = `component-text-${componentId}`
+
   const [rawHtml, handleRawHtml] = useState(null)
   const editor = useEditor({
     extensions: [
@@ -92,7 +93,7 @@ export const TextEditor = ({ componentId, componentPosition }: Props) => {
         openOnClick: false,
       }),
     ],
-    content: defaultContent,
+    content: initialContent ?? defaultInitialContent,
     onSelectionUpdate(props) {      
       if (props.editor.isActive('explanation')) {
         props.editor.commands.extendMarkRange('explanation')

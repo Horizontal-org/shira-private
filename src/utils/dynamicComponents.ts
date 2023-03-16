@@ -4,6 +4,8 @@ export interface Component {
   node: ReactElement
   type: string
   position: number
+  content?: string
+  dataPosition?: number
 }
 
 

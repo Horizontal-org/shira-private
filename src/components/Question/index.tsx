@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
 import styled from 'styled-components'
-import { TextEditor } from '../DynamicComponents/TextEditor'
 import { Explanations } from '../Explanations'
 import { AppsSelector } from '../AppsSelector'
 import { Button } from '../Button'
-import { submit } from '../../fetch/question'
+import { useSubmit } from '../../fetch/question'
 import { RequiredContent } from '../RequiredContent'
 import { OptionalContent } from '../OptionalContent'
 import { QuestionContent } from '../QuestionContent'
@@ -15,28 +15,41 @@ import { Link } from 'react-router-dom'
 import { subscribe, unsubscribe } from '../../utils/customEvent'
 import { cleanDeletedExplanations } from '../../utils/explanations'
 import { FieldsOfWorkSelector } from '../FieldsOfWorkSelector'
+import { App } from '../../fetch/app'
+import { parseDynamicContent } from '../../hooks/useParseHtml'
 
 interface Props {}
 
 export const Question: FunctionComponent<Props> = () => {
+
+  const { id } = useParams()
 
   const { 
     clearQuestion,
     clearApps,
     clearExplanations,
     selectedApps,
-    clearFieldsOfWork
+    clearFieldsOfWork,
+    fetchQuestion,
+    question,
+    setSelectedApps
   } = useStore((state) => ({
     clearQuestion: state.clearQuestion,
     clearApps: state.clearSelectedApps,
     clearExplanations: state.clearExplanations,
     clearFieldsOfWork: state.clearSelectedFieldsOfWork,
-    selectedApps: state.selectedApps
+    selectedApps: state.selectedApps,
+    setSelectedApps: state.setSelectedApps,
+    fetchQuestion: state.fetchQuestion,
+    question: state.question
   }), shallow)
+
 
   const [appType, handleAppType] = useState(null)
   const [name, handleName] = useState('')
   const [phising, handlePhising] = useState(false)
+
+  const { submit } = useSubmit() 
 
   const clear = () => {
     clearQuestion()
@@ -46,6 +59,8 @@ export const Question: FunctionComponent<Props> = () => {
   }
 
   useEffect(() => {
+    fetchQuestion(id)
+
     subscribe('delete-explanation', (event) => {
       cleanDeletedExplanations(event.detail.deleteIndex)
     })
@@ -55,6 +70,15 @@ export const Question: FunctionComponent<Props> = () => {
       clear()
     }
   }, [])
+
+  useEffect(() => {
+    if(question && id) {
+      handleName(question.name)
+      handlePhising(question.isPhising === 1 ? true : false)
+      handleAppType(question.apps[0].type)
+      setSelectedApps(question?.apps?.map((app: App)=> app.id))
+    }
+  }, [question, id])
   
   return (
     <div>
@@ -67,7 +91,10 @@ export const Question: FunctionComponent<Props> = () => {
         <SceneStructure>
           <ContentWrapper onSubmit={(e) => {
             e.preventDefault()
-            submit(name, phising)
+            if(id) {
+              return submit(name, phising, id)
+            } 
+            return submit(name, phising)
           }}>
 
             <h3>
@@ -76,6 +103,7 @@ export const Question: FunctionComponent<Props> = () => {
             <Input 
               required={true}
               placeholder={'Name'}
+              value={name}
               onChange={(e) => { 
                 handleName(e.target.value)
               }}
@@ -161,7 +189,8 @@ export const Question: FunctionComponent<Props> = () => {
                     Required content
                   </h3>
 
-                  <RequiredContent 
+                  <RequiredContent
+                    initialData={question?.content} 
                     type={appType}
                   />
 
@@ -170,22 +199,32 @@ export const Question: FunctionComponent<Props> = () => {
                   </h3>
                   
                   <OptionalContent 
+                    initialData={question?.content}
                     type={appType}
                   />
 
-                  <QuestionContent 
-                    appType={appType}
-                  />
+                  {id && question?.content && (
+                    <QuestionContent 
+                      initialContent={parseDynamicContent(question.content)}
+                      appType={appType}
+                    />
+                  )}
+
+                  {!id && (
+                     <QuestionContent
+                      appType={appType}
+                    />
+                  )}
 
                   <div>
                     <Button 
-                      text="Submit"
+                      text={id ? 'Save' : 'Submit'}
                     />
                   </div>
                 </DynamicContent>
 
                 <ExplanationsWrapper>
-                  <Explanations />
+                  <Explanations initialData={question?.explanations}/>
                 </ExplanationsWrapper>
               </DynamicContentWrapper>
             )}
