@@ -1,17 +1,15 @@
 import React, { FunctionComponent, useRef, useState } from 'react'
 import styled from 'styled-components'
-import shallow from 'zustand/shallow'
-import { useStore } from '../../../../store'
-import { ExplanationButton } from '../../../Explanations/components/ExplanationButton'
-import { Input } from '../../../Input'
 import { InputWithExplanation } from '../../../InputWithExplanation'
-
+import useParseHTML from '../../../../hooks/useParseHtml'
 interface Props {
   onChange: (expl, value, name) => void
+  initialData?: string
 }
 
-export const EmailContent: FunctionComponent<Props> = ({ onChange }) => {
+export const EmailContent: FunctionComponent<Props> = ({ onChange, initialData }) => {
 
+  const { parseCustomElement } = useParseHTML(initialData)
 
   return (
     <div>
@@ -20,6 +18,7 @@ export const EmailContent: FunctionComponent<Props> = ({ onChange }) => {
           id='content-subject'
           name='subject'
           placeholder='Subject'
+          initialValue={parseCustomElement('component-optional-subject')}
           onChange={(expl, value) => {
             onChange(expl, value, 'component-optional-subject')
           }}

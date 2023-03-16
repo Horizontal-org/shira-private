@@ -6,10 +6,12 @@ import { MessagingContent } from './components/MessagingContent';
 
 interface Props {
   type: string;
+  initialData?: string
 }
 
 export const RequiredContent: FunctionComponent<Props> = ({
-  type
+  type,
+  initialData
 }) => {
 
   const setRequiredContent = useStore((state) => (state.setRequiredContent))
@@ -22,10 +24,10 @@ export const RequiredContent: FunctionComponent<Props> = ({
   return (
     <div>
       { type === 'email' && (
-        <EmailContent onChange={parseHtml}/>
+        <EmailContent initialData={initialData} onChange={parseHtml}/>
       )}
       { type === 'messaging' && (
-        <MessagingContent onChange={parseHtml}/>
+        <MessagingContent initialData={initialData} onChange={parseHtml}/>
       )}
     </div>
   )

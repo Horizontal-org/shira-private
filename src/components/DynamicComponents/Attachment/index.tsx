@@ -6,14 +6,15 @@ import { useStore } from "../../../store";
 import { ExplanationButton } from "../../Explanations/components/ExplanationButton";
 import { Input } from "../../Input";
 import { InputWithExplanation } from "../../InputWithExplanation";
+import useParseHTML from "../../../hooks/useParseHtml";
 
 interface Props {
   componentId?: string;
   componentPosition?: string;
+  initialContent?: string
 }
 
-export const Attachment: FunctionComponent<Props> = ({ componentId, componentPosition }) => {
-
+export const Attachment: FunctionComponent<Props> = ({ componentId, componentPosition, initialContent }) => {
   const {
     setContent
   } = useStore((state) => ({
@@ -26,7 +27,7 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
 
   const inputRef = useRef<HTMLInputElement>()
   const componentFinalId = `component-attachment-${componentId}`
-
+  const { parseCustomElement } = useParseHTML(initialContent)
   const parseHtml = () => {
     const attachmentExplanation = inputRef.current.getAttribute('data-explanation')
     const explanation = attachmentExplanation ? ` data-explanation='${attachmentExplanation}' ` : ''  
@@ -46,37 +47,13 @@ export const Attachment: FunctionComponent<Props> = ({ componentId, componentPos
             name='sender-name'
             customRef={inputRef}
             placeholder={'Attachment name'}
+            initialValue={parseCustomElement(`component-attachment-${componentId}`)}
             required={true}
             onChange={(expl, value) => {
-              // onChange(expl, value, 'component-required-sender-name')
               parseHtml()
             }}
           />
-
-          {/* <Input
-            id={`component-attachment-${componentId}`} 
-            ref={inputRef}
-            placeholder={'Attachment name'}
-            onChange={(e) => { 
-              parseHtml()
-             }}
-            onFocus={() => {
-              const isSelected = inputRef.current.getAttribute('data-explanation')
-              if (isSelected) {
-                changeSelected(parseInt(isSelected))
-              }
-            }}
-          /> */}
         </InputWrapper>
-        {/* <ExplanationButton
-          active={inputRef.current && selectedExplanationIndex + '' == inputRef.current.getAttribute('data-explanation')}
-          onClick={() => { 
-            const index = explanationIndex + 1
-            inputRef.current.setAttribute('data-explanation', index + '')
-            addExplanation(index)
-            parseHtml()
-          }}
-        /> */}
       </Separator>
     </Wrapper>
   )

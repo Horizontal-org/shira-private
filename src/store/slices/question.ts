@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand"
-import { fetchQuestions, Question } from "../../fetch/question"
+import { fetchQuestion, fetchQuestions, Question, QuestionPayload } from "../../fetch/question"
 
 export interface QuestionSlice {
   content: {}
@@ -13,7 +13,9 @@ export interface QuestionSlice {
   deleteContent: (componentId: string) => void
   clearQuestion: () => void
   fetchQuestions: () => void
-  questions: Question[]
+  fetchQuestion: (id: string) => void
+  questions: Question[],
+  question?: QuestionPayload, 
 }
 
 export const createQuestionSlice: StateCreator<
@@ -27,6 +29,7 @@ export const createQuestionSlice: StateCreator<
   optionalContent: {},
   requiredContent: {},
   questions: [],
+  question: null,
   setContent: (id, html) => {
     let auxContent = {...get().content}
     auxContent[id] = html
@@ -74,4 +77,8 @@ export const createQuestionSlice: StateCreator<
     const res = await fetchQuestions()
     set({questions: res})
   },
+  fetchQuestion: async(id: string) => {
+    const res = await fetchQuestion(id)
+    set({ question: res })
+  }
 })

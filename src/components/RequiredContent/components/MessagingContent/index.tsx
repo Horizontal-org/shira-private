@@ -1,29 +1,42 @@
-import React, { FunctionComponent, useState } from 'react'
-import styled from 'styled-components'
-import { Input } from '../../../Input'
+import React, { FunctionComponent } from 'react'
 import { InputWithExplanation } from '../../../InputWithExplanation'
+import useParseHTML from '../../../../hooks/useParseHtml'
 
 interface Props {
   onChange: (expl, value, name) => void
+  initialData?: string
 }
 
-export const MessagingContent: FunctionComponent<Props> = ({ onChange }) => {
-
+export const MessagingContent: FunctionComponent<Props> = ({ onChange, initialData }) => {
+  const { parseCustomElement } = useParseHTML(initialData)
   return (
     <div>
-      <InputWithExplanation
-        id='content-phone'
-        name='sender-phone'
-        placeholder='Phone number'
-        required={true}
-        onChange={(expl, value) => {
-          onChange(expl, value, 'component-required-phone')
-        }}
-      />
+      <div>
+        <InputWithExplanation
+          id='content-phone'
+          name='sender-phone'
+          placeholder='Phone number'
+          initialValue={parseCustomElement('component-required-phone')}
+          required={true}
+          onChange={(expl, value) => {
+            onChange(expl, value, 'component-required-phone')
+          }}
+          validation='phone'
+        />
+      </div>
+
+      <div>
+        <InputWithExplanation
+          id='content-fullname'
+          name='sender-fullname'
+          placeholder='Name'
+          initialValue={parseCustomElement('component-required-fullname')}
+          required={true}
+          onChange={(expl, value) => {
+            onChange(expl, value, 'component-required-fullname')
+          }}
+        />
+      </div>
     </div>
   )
 }
-
-const Separator = styled.div`
-  padding-top: 12px;
-`
