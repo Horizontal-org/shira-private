@@ -27,6 +27,7 @@ export interface QuestionPayload {
   isPhising: number
   apps: App[]
   explanations: Explanation[]
+  fieldOfWorkId: number
 }
 
 export interface CustomElements {

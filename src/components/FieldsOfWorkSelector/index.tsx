@@ -31,10 +31,9 @@ export const FieldsOfWorkSelector: FunctionComponent<Props> = () => {
 
   useEffect(() => {
     if (selected !== selectedFieldsOfWork) {
-      handleSelected(selectedFieldsOfWork)
+      handleSelected(parseInt(selectedFieldsOfWork))
     }
   }, [selectedFieldsOfWork])
-
 
   return (
     <Wrapper>

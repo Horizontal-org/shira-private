@@ -32,7 +32,8 @@ export const Question: FunctionComponent<Props> = () => {
     clearFieldsOfWork,
     fetchQuestion,
     question,
-    setSelectedApps
+    setSelectedApps,
+    setSelectedFieldsOfWork
   } = useStore((state) => ({
     clearQuestion: state.clearQuestion,
     clearApps: state.clearSelectedApps,
@@ -40,6 +41,7 @@ export const Question: FunctionComponent<Props> = () => {
     clearFieldsOfWork: state.clearSelectedFieldsOfWork,
     selectedApps: state.selectedApps,
     setSelectedApps: state.setSelectedApps,
+    setSelectedFieldsOfWork: state.setSelectedFieldsOfWork,
     fetchQuestion: state.fetchQuestion,
     question: state.question
   }), shallow)
@@ -77,6 +79,7 @@ export const Question: FunctionComponent<Props> = () => {
       handlePhising(question.isPhising === 1 ? true : false)
       handleAppType(question.apps[0].type)
       setSelectedApps(question?.apps?.map((app: App)=> app.id))
+      setSelectedFieldsOfWork(question.fieldOfWorkId + '')
     }
   }, [question, id])
   
