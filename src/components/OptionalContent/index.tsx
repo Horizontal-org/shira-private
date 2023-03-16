@@ -5,9 +5,10 @@ import { EmailContent } from "./components/EmailContent";
 
 interface Props {
   type: string;
+  initialData?: string
 }
 
-export const OptionalContent: FunctionComponent<Props> = ({ type }) => {
+export const OptionalContent: FunctionComponent<Props> = ({ type, initialData }) => {
   const setOptionalContent = useStore((state) => (state.setOptionalContent))
 
   const parseHtml = (expl, value, id) => {
@@ -19,6 +20,7 @@ export const OptionalContent: FunctionComponent<Props> = ({ type }) => {
     <div>
       { type === 'email' && (
         <EmailContent 
+          initialData={initialData}
           onChange={parseHtml}
         />
       )}

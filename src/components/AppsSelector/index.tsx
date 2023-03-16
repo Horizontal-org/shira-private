@@ -37,7 +37,6 @@ export const AppsSelector:FunctionComponent<Props> = ({ type }) => {
     }
   }, [selectedApps])
 
-
   return (
     <Wrapper>
       { apps.filter(a => a.type === type ).map((a) => (

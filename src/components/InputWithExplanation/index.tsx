@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
+import { CustomElements } from '../../fetch/question'
 
 const RE_VALIDATIONS = {
   phone:  /^[0-9\W]*$/
@@ -16,6 +17,7 @@ interface Props {
   onChange?: (expl, value) => void
   required?: boolean;
   customRef?: React.MutableRefObject<HTMLInputElement>
+  initialValue?: CustomElements
   validation?: string
 }
 
@@ -26,6 +28,7 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   onChange,
   required,
   customRef,
+  initialValue,
   validation
 }) => {
 
@@ -45,6 +48,19 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
 
   const inputRef = useRef<HTMLInputElement>()
   const ref = customRef || inputRef
+
+  useEffect(() => {
+    if(initialValue?.textContent || initialValue?.explanationPosition) {
+      setValue(initialValue?.textContent)
+
+      if(initialValue?.explanationPosition) {
+        ref.current.setAttribute('data-explanation', initialValue?.explanationPosition)
+      }
+      ref.current.value=initialValue?.textContent
+
+      onChange(initialValue?.explanationPosition, initialValue?.textContent)
+    }
+  }, [initialValue, ref])
 
   return (
     <div>

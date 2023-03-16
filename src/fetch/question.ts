@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useStore } from '../store'
 import { useNavigate } from 'react-router-dom'
 import { App } from './app';
+import { Explanation } from '../store/slices/explanation';
 
 interface SubmitPayload {
   question: {
@@ -14,11 +15,23 @@ interface SubmitPayload {
     text: string;
   }
 }
-
 export interface Question {
   id: string;
   name: string;
   isPhising: number;
+}
+
+export interface QuestionPayload {
+  name: string
+  content: string
+  isPhising: number
+  apps: App[]
+  explanations: Explanation[]
+}
+
+export interface CustomElements {
+  textContent: string,
+  explanationPosition: string | null
 }
 
 export const fetchQuestions = async() => {
@@ -27,6 +40,15 @@ export const fetchQuestions = async() => {
     return res.data
   } catch (err) {
     console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
+  }
+}
+
+export const fetchQuestion = async(id: string) => {
+  try {
+    const res = await axios.get<QuestionPayload>(`${process.env.REACT_APP_API_URL}/question/${id}`) 
+    return res.data
+  } catch(err) {
+    console.log("🚀 ~ file: question.ts ~ line 37 ~ submit ~ err", err)   
   }
 }
 
@@ -43,7 +65,11 @@ export const useSubmit = () => {
 
   const navigate = useNavigate()
 
-  const submit = async (name, phising) => {
+  const submit = async (
+    name: string, 
+    phising: boolean,
+    id?: string
+    ) => {
     const {
       explanations,
       selectedApps,
@@ -83,9 +109,17 @@ export const useSubmit = () => {
     }
   
     try {
-      await axios.post<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question`, payload)
-      alert('Question created')
-      navigate("/")
+      if(!id) {
+        await axios.post<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question`, payload)
+        alert('Question created')
+      }
+
+      if(id) {
+        await axios.patch<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question/${id}`, payload)
+        alert('Question edited')
+      }
+      // navigate("/")
+      window.location.replace('/')
     } catch (err) {
       console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
     }
