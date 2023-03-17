@@ -1,9 +1,14 @@
-import React, { FunctionComponent, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import { ExplanationButton } from '../Explanations/components/ExplanationButton'
 import { Input } from '../Input'
+import { CustomElements } from '../../fetch/question'
+
+const RE_VALIDATIONS = {
+  phone:  /^[0-9\W]*$/
+}
 
 interface Props {
   placeholder?: string;
@@ -12,6 +17,8 @@ interface Props {
   onChange?: (expl, value) => void
   required?: boolean;
   customRef?: React.MutableRefObject<HTMLInputElement>
+  initialValue?: CustomElements
+  validation?: string
 }
 
 export const InputWithExplanation: FunctionComponent<Props> = ({
@@ -20,8 +27,12 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   id,
   onChange,
   required,
-  customRef
+  customRef,
+  initialValue,
+  validation
 }) => {
+
+  const [value, setValue] = useState<string>('')
 
   const {
     addExplanation,
@@ -38,6 +49,19 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
   const inputRef = useRef<HTMLInputElement>()
   const ref = customRef || inputRef
 
+  useEffect(() => {
+    if(initialValue?.textContent || initialValue?.explanationPosition) {
+      setValue(initialValue?.textContent)
+
+      if(initialValue?.explanationPosition) {
+        ref.current.setAttribute('data-explanation', initialValue?.explanationPosition)
+      }
+      ref.current.value=initialValue?.textContent
+
+      onChange(initialValue?.explanationPosition, initialValue?.textContent)
+    }
+  }, [initialValue, ref])
+
   return (
     <div>
       <Separator>
@@ -46,8 +70,11 @@ export const InputWithExplanation: FunctionComponent<Props> = ({
           name={name}
           required={required}
           ref={ref}
+          value={value}
           placeholder={placeholder}
           onChange={() => { 
+            if(RE_VALIDATIONS[validation] && !RE_VALIDATIONS[validation]?.test(ref.current.value)) return
+            setValue(ref.current.value)
             onChange(
               ref.current.getAttribute('data-explanation'),
               ref.current.value,

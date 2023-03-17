@@ -46,6 +46,7 @@ function App() {
             <>
               <Route path="/question" element={<QuestionLayout />} />
               <Route path="/" element={<HomeLayout />} />
+              <Route path="/question/:id"  element={<QuestionLayout />} /> 
             </>
           )}
         </Routes>

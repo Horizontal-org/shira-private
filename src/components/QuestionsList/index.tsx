@@ -1,14 +1,11 @@
-import { FunctionComponent } from "react";
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { deleteQuestion, Question } from "../../fetch/question";
+import { deleteQuestion } from "../../fetch/question";
 import { useStore } from "../../store";
 import { Button } from "../Button";
 
-interface Props {
-  questions: Question[]
-}
-
 export const QuestionsList = ({ questions }) => {
+  const navigate = useNavigate()
 
   const fetchQuestions = useStore((state) => (state.fetchQuestions))
   return (
@@ -22,6 +19,7 @@ export const QuestionsList = ({ questions }) => {
             <Phishing 
               is={q.isPhising}
             >{q.isPhising ? 'Phising' : 'Legitimate'}</Phishing>  
+            <Button text="Edit"  onClick={() => navigate(`question/${q.id}`) } />
             <Button text="Delete" onClick={async() => {
               if(window.confirm('Sure you want to delete this question?')){
                 await deleteQuestion(q.id)
@@ -63,6 +61,7 @@ const Phishing = styled.div`
 
 const Right = styled.div`
   display: flex; 
+  justify-content: space-between;
   > div {
     width: 100px;
   }
