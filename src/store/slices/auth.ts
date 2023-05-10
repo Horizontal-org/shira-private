@@ -1,10 +1,8 @@
 import { StateCreator } from "zustand"
-import { App, getApps } from "../../fetch/app"
 import { checkAuth, login } from "../../fetch/auth";
 
 export interface AuthSlice {
   fetchMe: (token) => void
-  // token: (apps: string[]) => void
   login: (email, pass) => void
   me: () => void
   user: {

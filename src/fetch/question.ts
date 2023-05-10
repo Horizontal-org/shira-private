@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useStore } from '../store'
-import { useNavigate } from 'react-router-dom'
 import { App } from './app';
 import { Explanation } from '../store/slices/explanation';
 
@@ -75,7 +74,8 @@ export const useSubmit = () => {
       selectedFieldsOfWork,
       content,
       optionalContent,
-      requiredContent
+      requiredContent,
+      handleTranslationsScene
     } = useStore.getState()
     
     const requiredHTML = Object.keys(requiredContent).reduce((prev, current) => {
@@ -119,8 +119,8 @@ export const useSubmit = () => {
         await axios.patch<SubmitPayload[]>(`${process.env.REACT_APP_API_URL}/question/${id}`, payload)
         alert('Question edited')
       }
-      // navigate("/")
       window.location.replace('/')
+      // handleTranslationsScene(true)      
     } catch (err) {
       console.log("🚀 ~ file: question.ts ~ line 20 ~ submit ~ err", err)    
     }

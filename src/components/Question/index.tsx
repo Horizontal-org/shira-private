@@ -92,12 +92,15 @@ export const Question: FunctionComponent<Props> = () => {
         <h2>Shira - New Question</h2>
         
         <SceneStructure>
-          <ContentWrapper onSubmit={(e) => {
+          <ContentWrapper onSubmit={async (e) => {
             e.preventDefault()
+
+            let response = null
             if(id) {
-              return submit(name, phising, id)
-            } 
-            return submit(name, phising)
+              response = await submit(name, phising, id)
+            } else {
+              response = await submit(name, phising)
+            }            
           }}>
 
             <h3>
