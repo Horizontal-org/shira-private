@@ -5,6 +5,7 @@ import { useStore } from "../../store";
 import { Button } from "../Button";
 import { useNavigate } from 'react-router-dom'
 import { QuestionsList } from "../QuestionsList";
+import { GlobalImportExport } from "../GlobalImportExport";
 
 interface Props {}
 
@@ -27,9 +28,14 @@ export const HomeLayout: FunctionComponent<Props> = () => {
       <div>
         <Header>
           <h2>Shira - Admin</h2>
-          <Button text="Create question" onClick={() => {
-            navigate('/question')
-          }}/>          
+          <div>
+            <Button text="Create question" onClick={() => {
+              navigate('/question')
+            }}/>          
+            <div>              
+              <GlobalImportExport />
+            </div>
+          </div>
         </Header>
 
         <QuestionsList 
@@ -53,5 +59,4 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
 `
