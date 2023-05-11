@@ -11,7 +11,7 @@ pipeline {
             steps {
               script {
                 sh '''            
-                  ssh -o StrictHostKeyChecking=no root@shira.wearehorizontal.org "echo 'error'"
+                  ssh -o StrictHostKeyChecking=no root@shira.wearehorizontal.org "echo 'test'"
                 '''
               }
             }
