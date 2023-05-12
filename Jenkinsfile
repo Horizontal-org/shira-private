@@ -11,7 +11,7 @@ pipeline {
             steps {
               script {
                 sh '''            
-                  ssh -o StrictHostKeyChecking=no root@shira.wearehorizontal.org "echo 'test again again once more'"
+                  ssh -o StrictHostKeyChecking=no root@shira.app "cd /home/shira-production/shira-private ; git fetch --all ; git reset --hard origin/main; export PATH=/root/.nvm/versions/node/v16.20.0/bin:$PATH ; npm install ; npm run build"
                 '''
               }
             }
@@ -23,7 +23,7 @@ pipeline {
             steps {
               script {
                 sh '''            
-                  ssh -o StrictHostKeyChecking=no root@shira.wearehorizontal.org "cd /home/shira-staging/shira-private ; git fetch --all ; git reset --hard origin/development; export PATH=/root/.nvm/versions/node/v16.17.1/bin:$PATH ; npm install ; npm run build"
+                  ssh -o StrictHostKeyChecking=no root@beta.shira.app "cd /home/shira-staging/shira-private ; git fetch --all ; git reset --hard origin/development; export PATH=/root/.nvm/versions/node/v16.17.1/bin:$PATH ; npm install ; npm run build"
                 '''
               }
             }
