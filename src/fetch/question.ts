@@ -10,6 +10,7 @@ interface SubmitPayload {
     apps: App[],
   }
   explanations: {
+    id?: number;
     position: string;
     text: string;
   }
@@ -101,7 +102,9 @@ export const useSubmit = () => {
         fieldOfWork: selectedFieldsOfWork
       },
       explanations: explanations.map((e) => {
+        console.log(e)
         return {
+          id: e.id,
           position: e.position + '',
           index: e.index + '',
           text: e.text
