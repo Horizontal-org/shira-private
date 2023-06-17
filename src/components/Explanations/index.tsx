@@ -98,7 +98,7 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
                         text={e.text}
                         unselect={() => { changeSelected(null) }}
                         onUpdate={(text) => {
-                          updateExplanation(e.index, text, e.position)
+                          updateExplanation(e.index, text, e.position, e.id)
                         }}
                       />
                     </ExplanationBox>

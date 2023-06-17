@@ -4,6 +4,7 @@ export interface Explanation {
   index: number;
   text?: string;
   position?: number;
+  id?: number;
 }
 
 export interface ExplanationsSlice {
@@ -13,7 +14,7 @@ export interface ExplanationsSlice {
   explanationIndex: number;
   addExplanation: (index: number, text?: string, position?: number) => void
   setInitialExplanations: (explanations: Explanation[]) => void
-  updateExplanation: (index: number, text: string, position?: number) => void
+  updateExplanation: (index: number, text: string, position?: number, id?: number) => void
   updateExplanations: (explanations: Explanation[]) => void
   deleteExplanation: (index: number) => void
   deleteExplanations: (componentId: number, componentType: string) => void
@@ -73,11 +74,11 @@ export const createExplanationsSlice: StateCreator<
       explanations: state.explanations.filter(e => !toDelete.includes(+e.index))
     }))
   },
-  updateExplanation: (index, text, position) => {
+  updateExplanation: (index, text, position, id) => {
     let oldExplanations = get().explanations.filter(e => e.index !== index)
     const explanations = [
       ...oldExplanations,
-      { index: index, text: text, position: position}
+      { id, index: index, text: text, position: position}
     ].sort((a, b) => a.position - b.position)
 
     set((state) => ({
