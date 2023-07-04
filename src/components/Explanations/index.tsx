@@ -22,7 +22,13 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     deleteExplanation,
     updateExplanation,
     updateExplanations,
-    setInitialExplanations
+    setInitialExplanations,
+    setRequiredContent,
+    setOptionalContent,
+    setDynamicContent,
+    requiredContent,
+    optionalContent,
+    dynamicContent
   } = useStore((state) => ({
     storeExplanations: state.explanations,
     changeSelected: state.changeSelected,
@@ -30,7 +36,13 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     updateExplanation: state.updateExplanation,
     updateExplanations: state.updateExplanations,
     deleteExplanation: state.deleteExplanation,
-    setInitialExplanations: state.setInitialExplanations
+    setInitialExplanations: state.setInitialExplanations,
+    setRequiredContent: state.setRequiredContent,
+    setOptionalContent: state.setOptionalContent,
+    setDynamicContent: state.setContent,
+    requiredContent: state.requiredContent,
+    optionalContent: state.optionalContent,
+    dynamicContent: state.content
   }), shallow)
 
   useEffect(() => {
@@ -69,6 +81,35 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
     updateExplanations(items)
   }
 
+  const cleanStateExplanations = (indexToDelete) => {
+    const explanationsHtml = document.getElementById('dynamic-content').querySelectorAll('[data-explanation]') 
+
+    const toDelete = Array.from(explanationsHtml).find(e => parseInt(e.getAttribute('data-explanation')) === parseInt(indexToDelete))
+
+    if (toDelete.nodeName !== 'MARK') {
+      const id = toDelete.getAttribute('id')
+
+      const cleanContent = (content, setContent) => {
+        const stringWithoutAttribute = content.replace(/ data-explanation='[^']*'/g, '');
+        console.log(stringWithoutAttribute);
+        setContent(id, stringWithoutAttribute);
+      };
+
+      if(id.includes('required')) {
+        const content = requiredContent[id]
+        cleanContent(content, setRequiredContent);
+      }
+      if(id.includes('optional')) {
+        const content = optionalContent[id]
+        cleanContent(content, setOptionalContent);
+      }
+      if(id.includes('attachment')){
+        const content = dynamicContent[id]
+        cleanContent(content, setDynamicContent);
+      }
+    }
+  }
+
   return (
     <Wrapper>
   
@@ -103,8 +144,12 @@ export const Explanations: FunctionComponent<Props> = ({ initialData }) => {
                       />
                     </ExplanationBox>
                   )}
-                  onDelete={() => {                                           
+                  onDelete={() => {   
+                    // this removes the data-explanation attr from zustand                                     
+                    cleanStateExplanations(e.index)
+                    // this removes the data-explanation attribute from the DOM
                     publish('delete-explanation', { deleteIndex: e.index })
+                    // this removes the explanation item
                     deleteExplanation(e.index)                    
                   }}
                 />

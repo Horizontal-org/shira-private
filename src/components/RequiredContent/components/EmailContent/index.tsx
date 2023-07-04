@@ -13,7 +13,7 @@ export const EmailContent: FunctionComponent<Props> = ({ onChange, initialData }
   return (
     <div>      
       <InputWithExplanation
-        id='content-sender-name'
+        id='component-required-sender-name'
         name='sender-name'
         placeholder='Sender name'
         initialValue={parseCustomElement('component-required-sender-name')}
@@ -23,7 +23,7 @@ export const EmailContent: FunctionComponent<Props> = ({ onChange, initialData }
         }}
       />
       <InputWithExplanation
-        id='content-sender-email'
+        id='component-required-sender-email'
         required={true}
         name='sender-email'
         placeholder='Sender email'
