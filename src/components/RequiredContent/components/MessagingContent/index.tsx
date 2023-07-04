@@ -13,7 +13,7 @@ export const MessagingContent: FunctionComponent<Props> = ({ onChange, initialDa
     <div>
       <div>
         <InputWithExplanation
-          id='content-phone'
+          id='component-required-phone'
           name='sender-phone'
           placeholder='Phone number'
           initialValue={parseCustomElement('component-required-phone')}
@@ -27,7 +27,7 @@ export const MessagingContent: FunctionComponent<Props> = ({ onChange, initialDa
 
       <div>
         <InputWithExplanation
-          id='content-fullname'
+          id='component-required-fullname'
           name='sender-fullname'
           placeholder='Name'
           initialValue={parseCustomElement('component-required-fullname')}

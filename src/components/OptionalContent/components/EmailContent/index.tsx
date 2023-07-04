@@ -15,7 +15,7 @@ export const EmailContent: FunctionComponent<Props> = ({ onChange, initialData }
     <div>
       <Separator>
         <InputWithExplanation 
-          id='content-subject'
+          id='component-optional-subject'
           name='subject'
           placeholder='Subject'
           initialValue={parseCustomElement('component-optional-subject')}
