@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { useNavigate } from 'react-router-dom'
 import { QuestionsList } from "../QuestionsList";
 import { GlobalImportExport } from "../GlobalImportExport";
+import { logout } from "../../utils/logout";
 
 interface Props {}
 
@@ -27,7 +28,12 @@ export const HomeLayout: FunctionComponent<Props> = () => {
     <Wrapper>
       <div>
         <Header>
-          <h2>Shira - Admin</h2>
+          <div>
+            <h2>Shira - Admin</h2>
+            <a href="#" onClick={() => { 
+              logout()
+            }}>logout</a>
+          </div>
           <div>
             <Button text="Create question" onClick={() => {
               navigate('/question')
