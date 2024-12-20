@@ -3,7 +3,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useLocation,
 } from 'react-router-dom'
 import { QuestionLayout } from './components/QuestionLayout';
 import { HomeLayout } from './components/HomeLayout';
@@ -15,6 +14,7 @@ import { ManageQuestionLanguages } from './components/ManageQuestionLanguages';
 import { ManageGlobalLanguages } from './components/ManageGlobalLanguages';
 import { ToastBar, Toaster, toast } from 'react-hot-toast';
 import { SmallCloseButton } from './components/SmallCloseButton';
+import { ThemeProvider } from '@horizontal-org/shira-ui';
 
 function App() {
 
@@ -48,41 +48,43 @@ function App() {
   }
 
   return (
-    <>
-      <Wrapper hideOverflow={showTranslationsScene || false}>
-        <BrowserRouter>
-          <Routes>          
-            <Route path='/login' element={<LoginLayout />} />
-            { user && (
-              <>
-                <Route path="/question" element={<QuestionLayout />} />
-                <Route path="/translations" element={<ManageGlobalLanguages />} />
-                <Route path="/" element={<HomeLayout />} />
-                <Route path="/question/:id"  element={<QuestionLayout />} /> 
-              </>
-            )}
-          </Routes>
-        </BrowserRouter>
-      </Wrapper>
-      <Toaster
-        position="bottom-right"        
-      >
-        {(t) => (
-          <ToastBar toast={t}>
-            {({ icon, message }) => (
-              <>
-                {icon}
-                {message}
-                {t.type !== 'loading' && (
-                  <SmallCloseButton onClose={() => toast.dismiss(t.id)} />                  
-                )}
-              </>
-            )}
-          </ToastBar>
-        )}
-      </Toaster>
-      <ManageQuestionLanguages />
-    </>
+    <ThemeProvider>
+      <>
+        <Wrapper hideOverflow={showTranslationsScene || false}>
+          <BrowserRouter>
+            <Routes>          
+              <Route path='/login' element={<LoginLayout />} />
+              { user && (
+                <>
+                  <Route path="/question" element={<QuestionLayout />} />
+                  <Route path="/translations" element={<ManageGlobalLanguages />} />
+                  <Route path="/" element={<HomeLayout />} />
+                  <Route path="/question/:id"  element={<QuestionLayout />} /> 
+                </>
+              )}
+            </Routes>
+          </BrowserRouter>
+        </Wrapper>
+        <Toaster
+          position="bottom-right"        
+        >
+          {(t) => (
+            <ToastBar toast={t}>
+              {({ icon, message }) => (
+                <>
+                  {icon}
+                  {message}
+                  {t.type !== 'loading' && (
+                    <SmallCloseButton onClose={() => toast.dismiss(t.id)} />                  
+                  )}
+                </>
+              )}
+            </ToastBar>
+          )}
+        </Toaster>
+        <ManageQuestionLanguages />
+      </>
+    </ThemeProvider>
   );
 }
 
