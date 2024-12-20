@@ -44,7 +44,7 @@ export const LoginLayout: FunctionComponent<Props> = () => {
   return (
     <Container>
       <BackgroundPattern />
-      <Form 
+      <StyledForm 
         title="Log in" 
         description= {description}
         onSubmit={(e) => {
@@ -71,10 +71,13 @@ export const LoginLayout: FunctionComponent<Props> = () => {
             text="Log in"
             type="primary"
             disabled={!(email && pass)}
-            onClick={() => console.log("Login clicked")}
+            onClick={(e) => {
+              e.preventDefault();
+              login(email, pass);
+            }}
           />
         </ButtonContainer>
-      </Form>
+      </StyledForm>
     </Container>
   );
 };
@@ -93,6 +96,11 @@ const Container = styled.div`
         padding: 16px;
     }
 `;
+
+const StyledForm = styled(Form)`
+  position: relative;
+  z-index:1;
+`
 
 const BackgroundPattern = styled.div`
    background-image: url(${backgroundSvg});
