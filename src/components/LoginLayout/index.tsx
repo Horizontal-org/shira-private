@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { useStore } from "../../store";
+import backgroundSvg from '../../assets/Background.svg';
 
 interface Props {}
 
@@ -42,6 +43,7 @@ export const LoginLayout: FunctionComponent<Props> = () => {
   );
   return (
     <Container>
+      <BackgroundPattern />
       <Form 
         title="Log in" 
         description= {description}
@@ -90,6 +92,23 @@ const Container = styled.div`
     @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
         padding: 16px;
     }
+`;
+
+const BackgroundPattern = styled.div`
+   background-image: url(${backgroundSvg});
+  background-repeat: no-repeat;
+  background-size: appropriate-size;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15;
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    display: none;  // Hides the background on mobile
+  }
 `;
 
 const InputsContainer = styled.div`
