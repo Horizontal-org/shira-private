@@ -35,7 +35,7 @@ export const LoginLayout: FunctionComponent<Props> = () => {
 
   const description = (
     <>
-      Shira spaces are currently in closed beta. To obtain the passphrase necessary to join the beta, email us at{' '}
+      Log in to access your custom Shira space. If you have trouble logging in, contact us at{' '}
       <Link1 href="mailto:contact@wearehorizontal.org">
         contact@wearehorizontal.org
       </Link1>

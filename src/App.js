@@ -7,6 +7,7 @@ import {
 import { QuestionLayout } from './components/QuestionLayout';
 import { HomeLayout } from './components/HomeLayout';
 import { LoginLayout } from './components/LoginLayout';
+import { CreateSpaceLayout } from './components/CreateSpaceLayout';
 import shallow from 'zustand/shallow';
 import { useStore } from './store';
 import { useEffect } from 'react';
@@ -54,6 +55,7 @@ function App() {
           <BrowserRouter>
             <Routes>          
               <Route path='/login' element={<LoginLayout />} />
+              <Route path='/create-space' element={<CreateSpaceLayout />} />
               { user && (
                 <>
                   <Route path="/question" element={<QuestionLayout />} />

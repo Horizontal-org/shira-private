@@ -1,0 +1,161 @@
+import { FunctionComponent } from "react";
+import {
+  Form,
+  Link1,
+  H1,
+  SubHeading2,
+  Button,
+  TextInput,
+  styled,
+} from "@horizontal-org/shira-ui";
+import backgroundSvg from "../../assets/Background.svg";
+
+interface Props {}
+
+export const CreateSpaceLayout: FunctionComponent<Props> = () => {
+  const description = (
+    <>
+      Shira spaces are currently in closed beta. To obtain the passphrase
+      necessary to join the beta, email us at{" "}
+      <Link1 href="mailto:contact@wearehorizontal.org">
+        contact@wearehorizontal.org
+      </Link1>
+    </>
+  );
+
+  return (
+    <Container>
+      <BackgroundPattern />
+      <Content>
+        <H1>Shira spaces</H1>
+        <SubHeading2>
+          After you create a space, you will be able to create custom quizzes
+          and questions specifically relevant to your context and communities.
+        </SubHeading2>
+
+        <StyledForm
+          title="Create a new space"
+          description={description}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <InputsContainer>
+            <TextInput label="Enter passphrase" value="" onChange={(e) => {}} />
+            <TextInput label="Name your space" value="" onChange={(e) => {}} />
+            <TextInput
+              label="Your email address"
+              value=""
+              onChange={(e) => {}}
+            />
+            <TextInput
+              type="password"
+              label="Password"
+              value=""
+              onChange={() => {}}
+            />
+
+            <TextInput
+              type="password"
+              label="Confirm Password"
+              value=""
+              onChange={() => {}}
+            />
+          </InputsContainer>
+
+          <ButtonContainer>
+            <StyledButton
+              text="Log in"
+              type="primary"
+              disabled={true}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            />
+          </ButtonContainer>
+        </StyledForm>
+      </Content>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: white;
+    overflow-y: auto;
+    position: relative;
+
+    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+        padding: 16px;
+        align-items: flex-start;
+        padding-top: 48px; 
+    }
+`;
+
+const Content = styled.div`
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 48px auto; 
+    width: 100%;
+`;
+
+const BackgroundPattern = styled.div`
+   background-image: url(${backgroundSvg});
+  background-repeat: no-repeat;
+  background-size: appropriate-size;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15;
+
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    display: none;
+  }
+`;
+
+const StyledForm = styled(Form)`
+  position: relative;
+  z-index:1;
+  text-align: left;
+`;
+const InputsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    width: 100%;
+    
+    button {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+`;
+
+const StyledButton = styled(Button)`
+  padding: 12px 24px;
+  width: auto;
+`;
