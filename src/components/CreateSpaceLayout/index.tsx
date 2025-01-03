@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import {
   Form,
   Link1,
@@ -13,6 +13,11 @@ import backgroundSvg from "../../assets/Background.svg";
 interface Props {}
 
 export const CreateSpaceLayout: FunctionComponent<Props> = () => {
+  const [email, handleEmail] = useState("");
+  const [pass, handlePass] = useState("");
+  const [passConfirmation, handlePassConfirmation] = useState("");
+  const [passphrase, handlePassphrase] = useState("");
+  const [name, handleName] = useState("");
   const description = (
     <>
       Shira spaces are currently in closed beta. To obtain the passphrase
@@ -41,31 +46,39 @@ export const CreateSpaceLayout: FunctionComponent<Props> = () => {
           }}
         >
           <InputsContainer>
-            <TextInput label="Enter passphrase" value="" onChange={(e) => {}} />
-            <TextInput label="Name your space" value="" onChange={(e) => {}} />
+            <TextInput 
+              label="Enter passphrase" 
+              value={passphrase} 
+              onChange={(e) => handlePassphrase(e.target.value)}
+            />
+            <TextInput 
+              label="Name your space" 
+              value={name} 
+              onChange={(e) => handleName(e.target.value)}
+            />
             <TextInput
               label="Your email address"
-              value=""
-              onChange={(e) => {}}
+              value={email}
+              onChange={(e) => handleEmail(e.target.value)}
             />
             <TextInput
               type="password"
               label="Password"
-              value=""
-              onChange={() => {}}
+              value={pass}
+              onChange={(e) => handlePass(e.target.value)}
             />
 
             <TextInput
               type="password"
               label="Confirm Password"
-              value=""
-              onChange={() => {}}
+              value={passConfirmation}
+              onChange={(e) => handlePassConfirmation(e.target.value)}
             />
           </InputsContainer>
 
           <ButtonContainer>
             <StyledButton
-              text="Log in"
+              text="Create new space"
               type="primary"
               disabled={true}
               onClick={(e) => {
