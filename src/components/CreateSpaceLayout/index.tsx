@@ -138,7 +138,7 @@ const Header = styled.div`
 const BackgroundPattern = styled.div`
    background-image: url(${backgroundSvg});
   background-repeat: no-repeat;
-  background-size: appropriate-size;
+  background-size: cover;
   position: fixed;
   top: 0;
   left: 0;
