@@ -32,11 +32,13 @@ export const CreateSpaceLayout: FunctionComponent<Props> = () => {
     <Container>
       <BackgroundPattern />
       <Content>
-        <H1>Shira spaces</H1>
-        <SubHeading2>
-          After you create a space, you will be able to create custom quizzes
-          and questions specifically relevant to your context and communities.
-        </SubHeading2>
+        <Header>
+          <H1>Shira spaces</H1>
+          <SubHeading2>
+            After you create a space, you will be able to create custom quizzes
+            and questions specifically relevant to your context and communities.
+          </SubHeading2>
+        </Header>
 
         <StyledForm
           title="Create a new space"
@@ -101,8 +103,9 @@ const Container = styled.div`
     justify-content: center;
     align-items: flex-start;
     background: white;
-    overflow-y: auto;
     position: relative;
+    overflow-y: visible;
+    height: auto;
 
     @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
         padding: 16px;
@@ -121,7 +124,16 @@ const Content = styled.div`
     gap: 24px;
     margin: 48px auto; 
     width: 100%;
+    height: auto;
 `;
+
+const Header = styled.div`
+  padding: 32px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
 
 const BackgroundPattern = styled.div`
    background-image: url(${backgroundSvg});
@@ -134,6 +146,7 @@ const BackgroundPattern = styled.div`
   height: 100%;
   z-index: 0;
   opacity: 0.15;
+  pointer-events: none; 
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     display: none;
@@ -144,6 +157,7 @@ const StyledForm = styled(Form)`
   position: relative;
   z-index:1;
   text-align: left;
+  margin-bottom: 32px;
 `;
 const InputsContainer = styled.div`
   display: flex;
