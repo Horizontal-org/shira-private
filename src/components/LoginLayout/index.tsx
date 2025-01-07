@@ -67,7 +67,7 @@ export const LoginLayout: FunctionComponent<Props> = () => {
         </InputsContainer>
 
         <ButtonContainer>
-          <StyledButton
+          <Button
             text="Log in"
             type="primary"
             disabled={!(email && pass)}
@@ -140,9 +140,4 @@ const ButtonContainer = styled.div`
       align-items: center;
     }
   }
-`;
-
-const StyledButton = styled(Button)`
-  padding: 12px 24px;
-  width: auto;
 `;
