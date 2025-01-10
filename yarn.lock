@@ -1254,10 +1254,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@horizontal-org/shira-ui@^1.0.22":
-  version "1.0.22"
-  resolved "https://registry.yarnpkg.com/@horizontal-org/shira-ui/-/shira-ui-1.0.22.tgz#e7cafd00a52c1aa3a99467444a4d8dd51507d3bb"
-  integrity sha512-BUViKkE2X/sdLG5IOSrcYAGXsXWS1sP/5cYkrs/GUEO6efGAG5RgT3NhX2VebFet1i7n+WPnnYLdY/latxLdJA==
+"@horizontal-org/shira-ui@^1.0.26":
+  version "1.0.26"
+  resolved "https://registry.yarnpkg.com/@horizontal-org/shira-ui/-/shira-ui-1.0.26.tgz#6679c122ff2fd36de2dd2220d61df09e8802b842"
+  integrity sha512-waGqrjpqXEj2kPma01v75/r2AmaDUlqmONZqjgNS6KlciarVrdNrlVax6qN5ZrInJlDO4mxEN0yrlexKpVjqPg==
   dependencies:
     react-icons "^5.4.0"
     styled-components "^6.1.13"

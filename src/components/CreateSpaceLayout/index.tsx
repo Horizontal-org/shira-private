@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   Link1,
@@ -7,6 +8,7 @@ import {
   Button,
   TextInput,
   styled,
+  Navbar
 } from "@horizontal-org/shira-ui";
 import backgroundSvg from "../../assets/Background.svg";
 
@@ -18,6 +20,7 @@ export const CreateSpaceLayout: FunctionComponent<Props> = () => {
   const [passConfirmation, handlePassConfirmation] = useState("");
   const [passphrase, handlePassphrase] = useState("");
   const [name, handleName] = useState("");
+  const navigate = useNavigate();
   const description = (
     <>
       Shira spaces are currently in closed beta. To obtain the passphrase
@@ -30,66 +33,72 @@ export const CreateSpaceLayout: FunctionComponent<Props> = () => {
 
   return (
     <Container>
-      <BackgroundPattern />
-      <Content>
-        <Header>
-          <H1>Shira spaces</H1>
-          <SubHeading2>
-            After you create a space, you will be able to create custom quizzes
-            and questions specifically relevant to your context and communities.
-          </SubHeading2>
-        </Header>
+      <Navbar
+        translatedTexts={{home: "", about: "", menu: "", logIn: "Log in", createSpace: "Create Space"}}
+        onNavigate={navigate}
+      />
+      <ContentWrapper>
+        <BackgroundPattern />
+        <Content>
+          <Header>
+            <H1>Shira spaces</H1>
+            <SubHeading2>
+              After you create a space, you will be able to create custom quizzes
+              and questions specifically relevant to your context and communities.
+            </SubHeading2>
+          </Header>
 
-        <StyledForm
-          title="Create a new space"
-          description={description}
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <InputsContainer>
-            <TextInput 
-              label="Enter passphrase" 
-              value={passphrase} 
-              onChange={(e) => handlePassphrase(e.target.value)}
-            />
-            <TextInput 
-              label="Name your space" 
-              value={name} 
-              onChange={(e) => handleName(e.target.value)}
-            />
-            <TextInput
-              label="Your email address"
-              value={email}
-              onChange={(e) => handleEmail(e.target.value)}
-            />
-            <TextInput
-              type="password"
-              label="Password"
-              value={pass}
-              onChange={(e) => handlePass(e.target.value)}
-            />
+          <StyledForm
+            title="Create a new space"
+            description={description}
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <InputsContainer>
+              <TextInput 
+                label="Enter passphrase" 
+                value={passphrase} 
+                onChange={(e) => handlePassphrase(e.target.value)}
+              />
+              <TextInput 
+                label="Name your space" 
+                value={name} 
+                onChange={(e) => handleName(e.target.value)}
+              />
+              <TextInput
+                label="Your email address"
+                value={email}
+                onChange={(e) => handleEmail(e.target.value)}
+              />
+              <TextInput
+                type="password"
+                label="Password"
+                value={pass}
+                onChange={(e) => handlePass(e.target.value)}
+              />
 
-            <TextInput
-              type="password"
-              label="Confirm Password"
-              value={passConfirmation}
-              onChange={(e) => handlePassConfirmation(e.target.value)}
-            />
-          </InputsContainer>
+              <TextInput
+                type="password"
+                label="Confirm Password"
+                value={passConfirmation}
+                onChange={(e) => handlePassConfirmation(e.target.value)}
+              />
+            </InputsContainer>
 
-          <ButtonContainer>
-            <Button
-              text="Create new space"
-              type="primary"
-              disabled={true}
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            />
-          </ButtonContainer>
-        </StyledForm>
-      </Content>
+            <ButtonContainer>
+              <Button
+                text="Create new space"
+                type="primary"
+                disabled={true}
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              />
+            </ButtonContainer>
+          </StyledForm>
+        </Content>
+      </ContentWrapper>
     </Container>
   );
 };
@@ -98,14 +107,24 @@ const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
     min-height: 100vh;
-    padding: 24px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
     background: white;
     position: relative;
-    overflow-y: visible;
     height: auto;
+    padding-bottom: 16px;
+    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+        padding-bottom: 0; 
+    }
+`;
+
+const ContentWrapper = styled.div`
+    padding: 24px;
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
 
     @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
         padding: 16px;
