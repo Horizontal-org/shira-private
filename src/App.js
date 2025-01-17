@@ -8,6 +8,7 @@ import { QuestionLayout } from './components/QuestionLayout';
 import { HomeLayout } from './components/HomeLayout';
 import { LoginLayout } from './components/LoginLayout';
 import { CreateSpaceLayout } from './components/CreateSpaceLayout';
+import { DashboardLayout } from './components/DashboardLayout';
 import shallow from 'zustand/shallow';
 import { useStore } from './store';
 import { useEffect } from 'react';
@@ -62,6 +63,7 @@ function App() {
                   <Route path="/translations" element={<ManageGlobalLanguages />} />
                   <Route path="/" element={<HomeLayout />} />
                   <Route path="/question/:id"  element={<QuestionLayout />} /> 
+                  <Route path="/dashboard"  element={<DashboardLayout />} /> 
                 </>
               )}
             </Routes>
