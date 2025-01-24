@@ -5,6 +5,7 @@ import {
   Button,
   TextInput,
   styled,
+  Navbar
 } from "@horizontal-org/shira-ui";
 import { useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
@@ -43,41 +44,47 @@ export const LoginLayout: FunctionComponent<Props> = () => {
   );
   return (
     <Container>
-      <BackgroundPattern />
-      <StyledForm 
-        title="Log in" 
-        description= {description}
-        onSubmit={(e) => {
-          e.preventDefault()
-          login(email, pass)
-        }}
-      >
-        <InputsContainer>
-          <TextInput
-            label="Email"
-            value={email}
-            onChange={(e) => handleEmail(e.target.value)}
-          />
-          <TextInput
-            type="password"
-            label="Password"
-            value={pass}
-            onChange={(e) => handlePass(e.target.value)}
-          />
-        </InputsContainer>
+      <Navbar
+        translatedTexts={{home: "", about: "", menu: "", logIn: "Log in", createSpace: "Create Space"}}
+        onNavigate={navigate}
+      />
+      <ContentWrapper>
+        <BackgroundPattern />
+        <StyledForm 
+          title="Log in" 
+          description= {description}
+          onSubmit={(e) => {
+            e.preventDefault()
+            login(email, pass)
+          }}
+        >
+          <InputsContainer>
+            <TextInput
+              label="Email"
+              value={email}
+              onChange={(e) => handleEmail(e.target.value)}
+            />
+            <TextInput
+              type="password"
+              label="Password"
+              value={pass}
+              onChange={(e) => handlePass(e.target.value)}
+            />
+          </InputsContainer>
 
-        <ButtonContainer>
-          <Button
-            text="Log in"
-            type="primary"
-            disabled={!(email && pass)}
-            onClick={(e) => {
-              e.preventDefault();
-              login(email, pass);
-            }}
-          />
-        </ButtonContainer>
-      </StyledForm>
+          <ButtonContainer>
+            <Button
+              text="Log in"
+              type="primary"
+              disabled={!(email && pass)}
+              onClick={(e) => {
+                e.preventDefault();
+                login(email, pass);
+              }}
+            />
+          </ButtonContainer>
+        </StyledForm>
+      </ContentWrapper>
     </Container>
   );
 };
@@ -88,13 +95,19 @@ const Container = styled.div`
     height: 100vh;
     padding: 24px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
+    flex-direction: column;  
+    position: relative; 
 
     @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
         padding: 16px;
     }
+`;
+
+const ContentWrapper = styled.div`
+    flex: 1;          
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const StyledForm = styled(Form)`
