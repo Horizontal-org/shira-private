@@ -57,13 +57,14 @@ function App() {
             <Routes>          
               <Route path='/login' element={<LoginLayout />} />
               <Route path='/create-space' element={<CreateSpaceLayout />} />
+              <Route path="/dashboard"  element={<DashboardLayout />} /> 
               { user && (
                 <>
                   <Route path="/question" element={<QuestionLayout />} />
                   <Route path="/translations" element={<ManageGlobalLanguages />} />
                   <Route path="/" element={<HomeLayout />} />
                   <Route path="/question/:id"  element={<QuestionLayout />} /> 
-                  <Route path="/dashboard"  element={<DashboardLayout />} /> 
+                  {/* <Route path="/dashboard"  element={<DashboardLayout />} />  */}
                 </>
               )}
             </Routes>

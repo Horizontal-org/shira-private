@@ -6,9 +6,11 @@ import {
   H2,
   SubHeading3,
   Body1,
-  Button
+  Button,
+  FilterButton
 } from "@horizontal-org/shira-ui";
 import { FiHome, FiHelpCircle, FiLogOut, FiPlus } from 'react-icons/fi';
+import { FilterStates, cardData } from "./constants";
 interface Props {}
 
 const defaultMenuItems = [
@@ -29,55 +31,9 @@ const defaultMenuItems = [
     },
   ];
 
-  const cardData = [
-    {
-      title: 'Short Title',
-      lastModified: '2 days ago',
-      isPublished: true,
-    },
-    {
-      title: 'Medium Length Title That Fits Well',
-      lastModified: '5 days ago',
-      isPublished: false,
-    },
-    {
-      title: 'Very Long Title That Should Truncate Because It Exceeds The Maximum Width Available',
-      lastModified: '1 week ago',
-      isPublished: true,
-    },
-    {
-      title: 'Short Title',
-      lastModified: '2 days ago',
-      isPublished: true,
-    },
-    {
-      title: 'Short Title',
-      lastModified: '2 days ago',
-      isPublished: true,
-    },
-    {
-      title: 'Medium Length Title That Fits Well',
-      lastModified: '5 days ago',
-      isPublished: false,
-    },
-    {
-      title: 'Very Long Title That Should Truncate Because It Exceeds The Maximum Width Available',
-      lastModified: '1 week ago',
-      isPublished: true,
-    },
-    {
-      title: 'Short Title',
-      lastModified: '2 days ago',
-      isPublished: true,
-    },
-    {
-      title: 'Very Long Title That Should Truncate Because It Exceeds The Maximum Width Available',
-      lastModified: '1 week ago',
-      isPublished: true,
-    },
-  ];
 export const DashboardLayout: FunctionComponent<Props> = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<FilterStates>(FilterStates.all);
 
   const handleSidebarCollapse = (collapsed: boolean) => {
     setIsSidebarCollapsed(collapsed);
@@ -105,6 +61,26 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
             />
           </ButtonContainer>
         </HeaderContainer>
+
+        <FilterButtonsContainer>
+          <FilterButton 
+            text="All quizzes"
+            handleFilter={() => setActiveFilter(FilterStates.all)}
+            isActive={activeFilter ===  FilterStates.all}
+          />
+
+          <FilterButton 
+            text="Published"
+            handleFilter={() => setActiveFilter(FilterStates.published)}
+            isActive={activeFilter ===  FilterStates.published}
+          />
+
+          <FilterButton 
+            text="Unpublished"
+            handleFilter={() => setActiveFilter(FilterStates.unpublished)}
+            isActive={activeFilter ===  FilterStates.unpublished}
+          />
+        </FilterButtonsContainer>
 
         <CardGrid>
           {cardData.map((card, index) => (
@@ -158,6 +134,13 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`
+
+const FilterButtonsContainer = styled.div`
+  margin-top: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 8px;
 `
 
 const CardGrid = styled.div`
