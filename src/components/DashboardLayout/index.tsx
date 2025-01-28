@@ -49,6 +49,18 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
       )
     );
   };
+
+  const handleCopyUrl = async (cardId: number) => {
+    try {
+      //mock url, change this later to the correct url
+      const quizUrl = `https://shira.app/quiz/${cardId}`;
+      await navigator.clipboard.writeText(quizUrl);
+      
+      // show toast msg
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+    }
+  };
   
   const filteredCards = cards.filter(card => {
     switch (activeFilter) {
@@ -112,7 +124,7 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
               title={card.title}
               lastModified={card.lastModified}
               isPublished={card.isPublished}
-              onCopyUrl={() => {}}
+              onCopyUrl={() => handleCopyUrl(card.id)}
               onTogglePublished={() => handleTogglePublished(card.id)}
               onMenuClick={() => {}}
             />
