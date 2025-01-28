@@ -34,12 +34,23 @@ const defaultMenuItems = [
 export const DashboardLayout: FunctionComponent<Props> = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterStates>(FilterStates.all);
+  const [cards, setCards] = useState(cardData);
 
   const handleSidebarCollapse = (collapsed: boolean) => {
     setIsSidebarCollapsed(collapsed);
   };
 
-  const filteredCards = cardData.filter(card => {
+  const handleTogglePublished = (cardId: number) => {
+    setCards(currentCards => 
+      currentCards.map(card => 
+        card.id === cardId 
+          ? { ...card, isPublished: !card.isPublished }
+          : card
+      )
+    );
+  };
+  
+  const filteredCards = cards.filter(card => {
     switch (activeFilter) {
       case FilterStates.published:
         return card.isPublished;
@@ -102,7 +113,7 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
               lastModified={card.lastModified}
               isPublished={card.isPublished}
               onCopyUrl={() => {}}
-              onTogglePublished={() => {}}
+              onTogglePublished={() => handleTogglePublished(card.id)}
               onMenuClick={() => {}}
             />
           ))}
