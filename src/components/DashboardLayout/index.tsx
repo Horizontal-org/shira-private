@@ -38,6 +38,18 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
   const handleSidebarCollapse = (collapsed: boolean) => {
     setIsSidebarCollapsed(collapsed);
   };
+
+  const filteredCards = cardData.filter(card => {
+    switch (activeFilter) {
+      case FilterStates.published:
+        return card.isPublished;
+      case FilterStates.unpublished:
+        return !card.isPublished;
+      case FilterStates.all:
+      default:
+        return true;
+    }
+  });
   
   return (
     <Container>
@@ -83,8 +95,9 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
         </FilterButtonsContainer>
 
         <CardGrid>
-          {cardData.map((card, index) => (
+          {filteredCards.map((card, index) => (
             <Card 
+              key={index}
               title={card.title}
               lastModified={card.lastModified}
               isPublished={card.isPublished}
