@@ -126,7 +126,8 @@ export const DashboardLayout: FunctionComponent<Props> = () => {
               isPublished={card.isPublished}
               onCopyUrl={() => handleCopyUrl(card.id)}
               onTogglePublished={() => handleTogglePublished(card.id)}
-              onMenuClick={() => {}}
+              onEdit={() => console.log("editing")}
+              onDelete={() => console.log("delete")}
             />
           ))}
         </CardGrid>
