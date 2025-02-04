@@ -11,7 +11,7 @@ export interface AuthSlice {
   fetching: boolean;
 }
 
-const publicRoutes = ['/login', '/dashboard'];
+const publicRoutes = ['/login', '/create-space'];
 
 export const createAuthSlice: StateCreator<
   AuthSlice,
