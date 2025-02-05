@@ -11,6 +11,8 @@ export interface AuthSlice {
   fetching: boolean;
 }
 
+const publicRoutes = ['/login', '/create-space'];
+
 export const createAuthSlice: StateCreator<
   AuthSlice,
   [],
@@ -26,13 +28,14 @@ export const createAuthSlice: StateCreator<
     const user = await login(email, pass)
     set({user: user})
   },
-  me: async () => {
-    const res = await checkAuth()
-    if (res) {
-      set({user: res})
-    } else if (window.location.pathname !== '/login'){
-       window.location.href = '/login'
-    }  
-    set({fetching: false})
-  },
+  
+me: async () => {
+  const res = await checkAuth();
+  if (res) {
+    set({ user: res });
+  } else if (!publicRoutes.includes(window.location.pathname)) {
+    window.location.href = '/login';
+  }
+  set({ fetching: false });
+},
 })
