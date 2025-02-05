@@ -1050,6 +1050,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.17.8":
+  version "7.26.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
+  integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/template@^7.18.10", "@babel/template@^7.3.3":
   version "7.18.10"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.18.10.tgz#6f9134835970d1dbf0835c0d100c9f38de0c5e71"
@@ -1254,11 +1261,12 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@horizontal-org/shira-ui@^1.0.26":
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/@horizontal-org/shira-ui/-/shira-ui-1.0.26.tgz#6679c122ff2fd36de2dd2220d61df09e8802b842"
-  integrity sha512-waGqrjpqXEj2kPma01v75/r2AmaDUlqmONZqjgNS6KlciarVrdNrlVax6qN5ZrInJlDO4mxEN0yrlexKpVjqPg==
+"@horizontal-org/shira-ui@^1.0.35":
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/@horizontal-org/shira-ui/-/shira-ui-1.0.35.tgz#97a5caeed6afdb5a38eb23862b59494109b5b79c"
+  integrity sha512-NjXs0dTQMYDJeV/OLfBzZCU4OM2g91vux5/1QkYV3/L+mndAxIVOmhQNdDYB7a5+d8T9HFmWu002Fg2QU6M7IQ==
   dependencies:
+    polished "^4.3.1"
     react-icons "^5.4.0"
     styled-components "^6.1.13"
 
@@ -6965,6 +6973,13 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+polished@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-4.3.1.tgz#5a00ae32715609f83d89f6f31d0f0261c6170548"
+  integrity sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==
+  dependencies:
+    "@babel/runtime" "^7.17.8"
+
 postcss-attribute-case-insensitive@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/postcss-attribute-case-insensitive/-/postcss-attribute-case-insensitive-5.0.2.tgz#03d761b24afc04c09e757e92ff53716ae8ea2741"
@@ -8072,6 +8087,11 @@ regenerator-runtime@^0.13.4, regenerator-runtime@^0.13.9:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
+
+regenerator-runtime@^0.14.0:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.1.tgz#356ade10263f685dda125100cd862c1db895327f"
+  integrity sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==
 
 regenerator-transform@^0.15.0:
   version "0.15.0"
